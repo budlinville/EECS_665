@@ -1,0 +1,8 @@
+#deprecated
+CC=gcc
+CFLAGS= -I
+
+all : hellomake
+
+hellomake : hellomake.o hellofun.o
+	$(CC) -o hellomake hellomake.o hellofun.o

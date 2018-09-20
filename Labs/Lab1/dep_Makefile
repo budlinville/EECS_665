@@ -1,0 +1,5 @@
+#deprecated makefile
+all : hellomake
+
+hellomake : hellomake.c hellofun.c
+	gcc -o hellomake hellomake.c hellofun.c -I
