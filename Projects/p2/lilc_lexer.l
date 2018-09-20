@@ -66,7 +66,7 @@ BADESCAPE [^tn\\\'\"?]
 {DIGIT}+	{
 	//Note: the following computation of the integer value
 	// does NOT check for overflow. This must be changed
-	long long ll = stoll(yytext);
+	long long ll = std::__cxx11::stoll(yytext);
 	if (ll < INT_MIN || ll > INT_MAX) {
 		std::string msg = "integer literal too large: ";
 		msg += yytext;
@@ -189,13 +189,13 @@ BADESCAPE [^tn\\\'\"?]
 }
 
 ({LETTER}|{DIGIT})+({LETTER}|{DIGIT}|"_")* {
-	yylval->symbolValue = new IDToken(lineNum, charNum, TokenTag::ID);
+	yylval->symbolValue = new IDToken(lineNum, charNum, yytext);
 	charNum+=yyleng;
 	return TokenTag::ID;
 }
 
 "\""(("\n"|"\t"|"\'"|"\""|"\?"|"\\")|{NOTBADCHAR})*"\""	{
-	yylval->symbolValue = new StringLitToken(lineNum, charNum, TokenTag::STRINGLITERAL);
+	yylval->symbolValue = new StringLitToken(lineNum, charNum, yytext);
 	charNum+=yyleng;
 	return TokenTag::STRINGLITERAL;
 }
@@ -350,8 +350,6 @@ BADESCAPE [^tn\\\'\"?]
 	return TokenTag::ASSIGN;
 }
 
-//	TODO: read "Bad string literals. Check to make sure special case is accounted for."
-//	TODO: make sure that I end this with "\n" and not {\n}
 "\"".*"\\"{BADESCAPE}.*"\n"	{
 	std::string msg = "unterminated string literal with bad escaped character ignored: ";
 	msg += yytext;
@@ -359,7 +357,7 @@ BADESCAPE [^tn\\\'\"?]
 	error(lineNum, charNum, msg);
 }
 
-"\"".*"\n"	""{
+"\"".*"\n" {
 	std::string msg = "unterminated string literal ignored: ";
 	msg += yytext;
 	charNum += yyleng;
