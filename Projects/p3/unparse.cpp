@@ -22,6 +22,11 @@ void VarDeclNode::unparse(std::ostream& out, int indent){
 	out << "\n";
 }
 
+void StructDeclNode::unparse(std::ostream& out, int indent){
+	out << "struct " << myId << " {\n";
+	out << myStructBody << "\n}";
+}
+
 void IdNode::unparse(std::ostream& out, int indent){
 	out << myStrVal;
 }

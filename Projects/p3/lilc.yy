@@ -134,8 +134,7 @@ program : declList {
 declList : declList decl {
     $1->push_back($2);
 	$$ = $1;
-}
-	| /* epsilon */ {
+} | /* epsilon */ {
 	$$ = new std::list<DeclNode *>();
 };
 
@@ -146,6 +145,17 @@ decl : varDecl {
 varDecl : type id SEMICOLON {
     $$ = new VarDeclNode($1, $2, VarDeclNode::NOT_STRUCT);
 }
+
+structDecl : STRUCT id LCURLY structBody RCURLY SEMICOLON {
+    $$ = new StructDeclNode($1, $2, 0);
+}
+
+structBody : structBody varDecl {
+    $1->push_back($2);
+	$$ = $1;
+} | varDecl {
+    $$ = new std::list<VarDeclNode *>();
+};
 
 type : INT { $$ = new IntNode(); }
 type : BOOL { $$ = new BoolNode(); }

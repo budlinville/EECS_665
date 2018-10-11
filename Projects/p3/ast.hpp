@@ -157,6 +157,21 @@ private:
 	int mySize;
 };
 
+class StructDeclNode : public DeclNode{
+public:
+	StructDeclNode(IdNode * id, StructBodyNode * str, int size) : DeclNode(){
+		myId = id;
+		myStructBody = str;
+		mySize = size;
+	}
+	void unparse(std::ostream& out, int indent);
+
+private:
+	IdNode * myId;
+	StructBodyNode * myStructBody
+	int mySize;
+};
+
 class TypeNode : public ASTNode{
 public:
 	TypeNode() : ASTNode(){
