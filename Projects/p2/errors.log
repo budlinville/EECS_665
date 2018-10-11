@@ -1,0 +1,8 @@
+35:17 ***ERROR*** unterminated string literal ignored: "the cat in the
+
+37:7 ***ERROR*** string literal with bad escaped character ignored: "  \y"
+38:6 ***ERROR*** unterminated string literal with bad escaped character ignored: " \u
+
+39:9 ***ERROR*** unterminated string literal ignored: "the cat
+
+40:19 ***ERROR*** integer literal too large: 3431243214324213421

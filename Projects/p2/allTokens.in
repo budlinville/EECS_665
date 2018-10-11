@@ -1,3 +1,40 @@
 123
 +
 x
+{     }      (      )      ;
+,      .      <<     >>     ++
+--     +      -      *      /
+!      &&     ||     ==     !=
+<      >      <=     >=     =
+bool
+int
+void
+true
+false
+struct
+cin
+cout
+if
+else
+while
+return
+// this is a comment
+# this is also a comment
+"this"
+"\n"
+"\t"
+"\""
+"\'"
+"\?"
+"\\"
+x
+567
+"that"
+y
+"those"
+"the cat in the
+he the she
+"  \y"
+" \u
+"the cat
+3431243214324213421

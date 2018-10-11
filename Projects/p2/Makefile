@@ -24,8 +24,13 @@ lilc_lexer.o: lilc_lexer.l
 	flex --outfile=lilc_lexer.yy.cc  $<
 	$(CXX)  $(CXXFLAGS) -c lilc_lexer.yy.cc -o lilc_lexer.o
 
+test:
+	./P2 allTokens.in allTokens.out 2> errors.log
+	diff allTokens.out allTokens.expected.out
+	diff errors.log errors.expected.log
+
 .PHONY: clean
-	
+
 clean:
 	rm -rf *.o *.output \
 	lilc_lexer.yy.cc \

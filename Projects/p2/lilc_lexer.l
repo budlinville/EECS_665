@@ -53,9 +53,9 @@ namespace LILC{
 
 DIGIT [0-9]
 WHITESPACE   [ \t]
-LETTER [a-z][A-Z]
+LETTER [a-zA-Z]
 NOTBADCHAR [^\n\"\\]
-NOQUOTE [^\"]
+NOQUOTE [^\"\n]
 BADESCAPE [^tn\\\'\"?]
 
 %%
@@ -63,7 +63,17 @@ BADESCAPE [^tn\\\'\"?]
 	yylval = lval;
 %}
 
-{DIGIT}+	{
+\n	{
+	// Update line number
+	lineNum++;
+	charNum = 1;
+}
+
+{WHITESPACE}+	{
+	charNum += yyleng;
+}
+
+{DIGIT}+{WHITESPACE}*	{
 	//Note: the following computation of the integer value
 	// does NOT check for overflow. This must be changed
 	long long ll = std::__cxx11::stoll(yytext);
@@ -78,16 +88,6 @@ BADESCAPE [^tn\\\'\"?]
 	yylval->symbolValue = new IntLitToken(lineNum, charNum, intVal);
 	charNum += yyleng;
     return TokenTag::INTLITERAL;
-}
-
-\n	{
-	// Update line number
-	lineNum++;
-	charNum = 1;
-}
-
-{WHITESPACE}+	{
-	charNum += yyleng;
 }
 
 "#".*	{
@@ -126,6 +126,12 @@ BADESCAPE [^tn\\\'\"?]
 	yylval->symbolValue = new NullaryToken(lineNum, charNum, TokenTag::BOOL);
 	charNum+=yyleng;
 	return TokenTag::BOOL;
+}
+
+"int" {
+	yylval->symbolValue = new NullaryToken(lineNum, charNum, TokenTag::INT);
+	charNum+=yyleng;
+	return TokenTag::INT;
 }
 
 "void" {
@@ -188,13 +194,38 @@ BADESCAPE [^tn\\\'\"?]
 	return TokenTag::RETURN;
 }
 
-({LETTER}|{DIGIT})+({LETTER}|{DIGIT}|"_")* {
+({LETTER}|"_")+({LETTER}|{DIGIT}|"_")* {
 	yylval->symbolValue = new IDToken(lineNum, charNum, yytext);
 	charNum+=yyleng;
 	return TokenTag::ID;
 }
 
-"\""(("\n"|"\t"|"\'"|"\""|"\?"|"\\")|{NOTBADCHAR})*"\""	{
+"\""{NOQUOTE}*"\\"{BADESCAPE}{NOQUOTE}*\n	{
+	std::string msg = "unterminated string literal with bad escaped character ignored: ";
+	msg += yytext;
+	charNum += yyleng;
+	error(lineNum, charNum, msg);
+	lineNum++;
+	charNum = 0;
+}
+
+"\""{NOQUOTE}*\n	 {
+	std::string msg = "unterminated string literal ignored: ";
+	msg += yytext;
+	charNum += yyleng;
+	error(lineNum, charNum, msg);
+	lineNum++;
+	charNum = 0;
+}
+
+"\""{NOQUOTE}*"\\"{BADESCAPE}{NOQUOTE}*"\"" {
+	std::string msg = "string literal with bad escaped character ignored: ";
+	msg += yytext;
+	charNum += yyleng;
+	error(lineNum, charNum, msg);
+}
+
+"\""(("\\"("n"|"t"|"'"|"\""|"?"|"\\"))|{NOTBADCHAR})*"\""	{
 	yylval->symbolValue = new StringLitToken(lineNum, charNum, yytext);
 	charNum+=yyleng;
 	return TokenTag::STRINGLITERAL;
@@ -266,30 +297,6 @@ BADESCAPE [^tn\\\'\"?]
 	return TokenTag::MINUSMINUS;
 }
 
-"+" {
-	yylval->symbolValue = new NullaryToken(lineNum, charNum, TokenTag::PLUS);
-	charNum+=yyleng;
-	return TokenTag::PLUS;
-}
-
-"-" {
-	yylval->symbolValue = new NullaryToken(lineNum, charNum, TokenTag::MINUS);
-	charNum+=yyleng;
-	return TokenTag::MINUS;
-}
-
-"*" {
-	yylval->symbolValue = new NullaryToken(lineNum, charNum, TokenTag::TIMES);
-	charNum+=yyleng;
-	return TokenTag::TIMES;
-}
-
-"/" {
-	yylval->symbolValue = new NullaryToken(lineNum, charNum, TokenTag::DIVIDE);
-	charNum+=yyleng;
-	return TokenTag::DIVIDE;
-}
-
 "!=" {
 	yylval->symbolValue = new NullaryToken(lineNum, charNum, TokenTag::NOTEQUALS);
 	charNum+=yyleng;
@@ -348,27 +355,6 @@ BADESCAPE [^tn\\\'\"?]
 	yylval->symbolValue = new NullaryToken(lineNum, charNum, TokenTag::ASSIGN);
 	charNum+=yyleng;
 	return TokenTag::ASSIGN;
-}
-
-"\"".*"\\"{BADESCAPE}.*"\n"	{
-	std::string msg = "unterminated string literal with bad escaped character ignored: ";
-	msg += yytext;
-	charNum += yyleng;
-	error(lineNum, charNum, msg);
-}
-
-"\"".*"\n" {
-	std::string msg = "unterminated string literal ignored: ";
-	msg += yytext;
-	charNum += yyleng;
-	error(lineNum, charNum, msg);
-}
-
-"\\"{BADESCAPE} {
-	std::string msg = "string literal with bad escaped character ignored: ";
-	msg += yytext;
-	charNum += yyleng;
-	error(lineNum, charNum, msg);
 }
 
 .	{
