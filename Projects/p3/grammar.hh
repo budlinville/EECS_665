@@ -153,36 +153,39 @@ namespace LILC {
 	*/
     LILC::SynSymbol * symbolValue;
 	LILC::IDToken * idTokenValue;
-    LILC::StrLitNode * strLitValue;
-    LILC::IntLitNode * intLitValue;
+    LILC::IntLitToken * intTokenValue;
+    LILC::StringLitToken * strTokenValue;
 	LILC::ASTNode * astNode;
 	LILC::ProgramNode * programNode;
 	std::list<DeclNode *> * declList;
 	LILC::DeclNode * declNode;
+    std::list<VarDeclNode> * varDeclList;
 	LILC::VarDeclNode * varDeclNode;
 	LILC::TypeNode * typeNode;
 	LILC::IdNode * idNode;
-  LILC::StructDeclNode * structDeclNode;
-  LILC::StructBodyNode * structBodyNode;
-  LILC::FnDeclNode * fnDeclNode;
-  LILC::FormalsNode * formalsNode;
-  LILC::FormalsListNode * formalsListNode;
-  LILC::FormalDeclNode * formalDeclNode;
-  LILC::FnBodyNode * fnBodyNode;
-  LILC::StmtNode * stmtNode;
-  LILC::StmtListNode * stmtListNode;
+    LILC::IntLitNode * intLitNode;
+    LILC::StrLitNode * strLitNode;
+    LILC::StructDeclNode * structDeclNode;
+    LILC::StructBodyNode * structBodyNode;
+    LILC::FnDeclNode * fnDeclNode;
+    LILC::FormalsNode * formalsNode;
+    LILC::FormalsListNode * formalsListNode;
+    LILC::FormalDeclNode * formalDeclNode;
+    LILC::FnBodyNode * fnBodyNode;
+    LILC::StmtNode * stmtNode;
+    LILC::StmtListNode * stmtListNode;
 
-  LILC::ExpNode * expNode;
-  LILC::ExpListNode * expListNode;
-  LILC::CallExpNode * callExpNode;
-  LILC::UnaryExpNode * unaryExpNode;
-  LILC::AssignNode * assignNode;
+    LILC::ExpNode * expNode;
+    LILC::ExpListNode * expListNode;
+    LILC::CallExpNode * callExpNode;
+    LILC::UnaryExpNode * unaryExpNode;
+    LILC::AssignNode * assignNode;
 
-  LILC::DotAccessNode * dotAccessNode;
+    LILC::DotAccessNode * dotAccessNode;
 
 	/*LILC::Token * token;*/
 
-#line 186 "grammar.hh" // lalr1.cc:372
+#line 189 "grammar.hh" // lalr1.cc:372
     };
 #else
     typedef YYSTYPE semantic_type;
@@ -401,7 +404,7 @@ namespace LILC {
   static const unsigned char yydefact_[];
 
   // YYPGOTO[NTERM-NUM].
-  static const short int yypgoto_[];
+  static const signed char yypgoto_[];
 
   // YYDEFGOTO[NTERM-NUM].
   static const signed char yydefgoto_[];
@@ -523,8 +526,8 @@ namespace LILC {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 270,     ///< Last index in yytable_.
-      yynnts_ = 22,  ///< Number of nonterminal symbols.
+      yylast_ = 267,     ///< Last index in yytable_.
+      yynnts_ = 23,  ///< Number of nonterminal symbols.
       yyempty_ = -2,
       yyfinal_ = 3, ///< Termination state number.
       yyterror_ = 1,
@@ -541,7 +544,7 @@ namespace LILC {
 
 #line 5 "lilc.yy" // lalr1.cc:372
 } // LILC
-#line 545 "grammar.hh" // lalr1.cc:372
+#line 548 "grammar.hh" // lalr1.cc:372
 
 
 

@@ -139,14 +139,14 @@ void PostDecStmtNode::unparse(std::ostream& out, int indent){
 
 void ReadStmtNode::unparse(std::ostream& out, int indent){
 	doIndent(out, indent);
-	out << "input >> ";	//TODO: no clue what the input token is supposed to be
+	out << "cin >> ";
 	myExpNode->unparse(out, 0);
 	out << ";\n";
 }
 
 void WriteStmtNode::unparse(std::ostream& out, int indent){
 	doIndent(out, indent);
-	out << "output <<";	//TODO: no clue what the output token is supposed to be
+	out << "cout <<";
 	myExpNode->unparse(out, 0);
 	out << ";\n";
 }

@@ -148,6 +148,16 @@ public:
 	}
 };
 
+class VarDeclListNode : public ASTNode{
+public:
+	VarDeclListNode(std::list<VarDeclNode *> * varDecls) : ASTNode(){
+		myVarDecls = *varDecls;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	std::list<VarDeclNode *> myVarDecls;
+};
+
 class VarDeclNode : public DeclNode{
 public:
 	VarDeclNode(TypeNode * type, IdNode * id, int size) : DeclNode(){
@@ -460,22 +470,22 @@ public:
 
 class IntLitNode : public ExpNode{
 public:
-	IntLitNode(int v) : ExpNode(){
+	IntLitNode(IntLitToken * v) : ExpNode(){
 		val = v;
 	}
 	void unparse(std::ostream& out, int indent);
 private:
-	int val;
+	IntLitToken * val;
 };
 
 class StrLitNode : public ExpNode{
 public:
-	StrLitNode(int v) : ExpNode(){
+	StrLitNode(StringLitToken * v) : ExpNode(){
 		val = v;
 	}
 	void unparse(std::ostream& out, int indent);
 private:
-	int val;
+	StringLitToken * val;
 };
 
 class TrueNode : public ExpNode{
