@@ -14,6 +14,14 @@ void DeclListNode::unparse(std::ostream& out, int indent){
 	}
 }
 
+void VarDeclListNode::unparse(std::ostream& out, int indent){
+	for (std::list<VarDeclNode *>::iterator it=myVarDecls.begin();
+		it != myVarDecls.end(); ++it){
+	    VarDeclNode * elt = *it;
+	    elt->unparse(out, indent);
+	}
+}
+
 void VarDeclNode::unparse(std::ostream& out, int indent){
 	doIndent(out, indent);
 	myType->unparse(out, 0);

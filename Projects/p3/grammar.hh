@@ -159,7 +159,7 @@ namespace LILC {
 	LILC::ProgramNode * programNode;
 	std::list<DeclNode *> * declList;
 	LILC::DeclNode * declNode;
-    std::list<VarDeclNode> * varDeclList;
+    std::list<VarDeclNode *> * varDeclList;
 	LILC::VarDeclNode * varDeclNode;
 	LILC::TypeNode * typeNode;
 	LILC::IdNode * idNode;

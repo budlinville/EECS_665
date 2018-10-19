@@ -105,6 +105,8 @@ namespace LILC{
 class SymSymbol;
 class DeclListNode;
 class DeclNode;
+class VarDeclListNode;
+class VarDeclNode;
 class TypeNode;
 class IdNode;
 class StmtNode;
@@ -230,7 +232,7 @@ public:
 
 class FnBodyNode : public ASTNode{
 public:
-	FnBodyNode(DeclListNode * declList, StmtListNode * stmtList) : ASTNode(){
+	FnBodyNode(VarDeclListNode * declList, StmtListNode * stmtList) : ASTNode(){
 		myDeclList = declList;
 		myStmtList = stmtList;
 		//mySize = size;
@@ -238,7 +240,7 @@ public:
 	void unparse(std::ostream& out, int indent);
 
 private:
-	DeclListNode * myDeclList;
+	VarDeclListNode * myDeclList;
 	StmtListNode * myStmtList;
 	//int mySize;
 };
@@ -388,7 +390,7 @@ public:
 
 class IfStmtNode : public StmtNode{
 public:
-	IfStmtNode(ExpNode * expNode, DeclListNode * declList, StmtListNode * stmtList) : StmtNode(){
+	IfStmtNode(ExpNode * expNode, VarDeclListNode * declList, StmtListNode * stmtList) : StmtNode(){
 		myExpNode = expNode;
 		myDeclList = declList;
 		myStmtList = stmtList;
@@ -396,13 +398,13 @@ public:
 	void unparse(std::ostream& out, int indent);
 
 	ExpNode * myExpNode;
-	DeclListNode * myDeclList;
+	VarDeclListNode * myDeclList;
 	StmtListNode * myStmtList;
 };
 
 class IfElseStmtNode : public StmtNode{
 public:
-	IfElseStmtNode(ExpNode * expNode, DeclListNode * declList1, StmtListNode * stmtList1, DeclListNode * declList2, StmtListNode * stmtList2) : StmtNode(){
+	IfElseStmtNode(ExpNode * expNode, VarDeclListNode * declList1, StmtListNode * stmtList1, VarDeclListNode * declList2, StmtListNode * stmtList2) : StmtNode(){
 		myExpNode = expNode;
 		myDeclList1 = declList1;
 		myStmtList1 = stmtList1;
@@ -412,15 +414,15 @@ public:
 	void unparse(std::ostream& out, int indent);
 
 	ExpNode * myExpNode;
-	DeclListNode * myDeclList1;
+	VarDeclListNode * myDeclList1;
 	StmtListNode * myStmtList1;
-	DeclListNode * myDeclList2;
+	VarDeclListNode * myDeclList2;
 	StmtListNode * myStmtList2;
 };
 
 class WhileStmtNode : public StmtNode{
 public:
-	WhileStmtNode(ExpNode * expNode, DeclListNode * declList, StmtListNode * stmtList) : StmtNode(){
+	WhileStmtNode(ExpNode * expNode, VarDeclListNode * declList, StmtListNode * stmtList) : StmtNode(){
 			myExpNode = expNode;
 			myDeclList = declList;
 			myStmtList = stmtList;
@@ -429,7 +431,7 @@ public:
 
 
 	ExpNode * myExpNode;
-	DeclListNode * myDeclList;
+	VarDeclListNode * myDeclList;
 	StmtListNode * myStmtList;
 };
 
@@ -727,6 +729,7 @@ public:
 class IdNode : public TypeNode{
 public:
 	IdNode(IDToken * token) : TypeNode(){
+		myStrVal = token->name;
 	}
 	void unparse(std::ostream& out, int indent);
 private:
