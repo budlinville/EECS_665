@@ -244,7 +244,8 @@ namespace LILC {
         GREATER = 296,
         LESSEQ = 297,
         GREATEREQ = 298,
-        ASSIGN = 299
+        ASSIGN = 299,
+        UMINUS = 300
       };
     };
 
@@ -404,7 +405,7 @@ namespace LILC {
   static const unsigned char yydefact_[];
 
   // YYPGOTO[NTERM-NUM].
-  static const signed char yypgoto_[];
+  static const short int yypgoto_[];
 
   // YYDEFGOTO[NTERM-NUM].
   static const signed char yydefgoto_[];
@@ -412,7 +413,7 @@ namespace LILC {
   // YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
   // positive, shift that token.  If negative, reduce the rule whose
   // number is the opposite.  If YYTABLE_NINF, syntax error.
-  static const unsigned char yytable_[];
+  static const short int yytable_[];
 
   static const short int yycheck_[];
 
@@ -526,13 +527,13 @@ namespace LILC {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 267,     ///< Last index in yytable_.
+      yylast_ = 295,     ///< Last index in yytable_.
       yynnts_ = 23,  ///< Number of nonterminal symbols.
       yyempty_ = -2,
       yyfinal_ = 3, ///< Termination state number.
       yyterror_ = 1,
       yyerrcode_ = 256,
-      yyntokens_ = 45  ///< Number of tokens.
+      yyntokens_ = 46  ///< Number of tokens.
     };
 
 
@@ -544,7 +545,7 @@ namespace LILC {
 
 #line 5 "lilc.yy" // lalr1.cc:372
 } // LILC
-#line 548 "grammar.hh" // lalr1.cc:372
+#line 549 "grammar.hh" // lalr1.cc:372
 
 
 

@@ -111,6 +111,14 @@ class TypeNode;
 class IdNode;
 class StmtNode;
 class ExpNode;
+class FormalsListNode;
+class FnBodyNode;
+class StmtListNode;
+class ExpNode;
+class AssignNode;
+class CallExpNode;
+class UnaryExpNode;
+class BinaryExpNode;
 
 class ASTNode{
 public:
@@ -145,19 +153,9 @@ private:
 class DeclNode : public ASTNode{
 public:
 	virtual void unparse(std::ostream& out, int indent) = 0;
-	void doIndent(std::ostream& out, int indent){
-		for (int k = 0 ; k < indent; k++){ out << " "; }
-	}
-};
+	/*void doIndent(std::ostream& out, int indent){
+		for (int k = 0 ; k < indent; k++){ out << " "; }*/
 
-class VarDeclListNode : public ASTNode{
-public:
-	VarDeclListNode(std::list<VarDeclNode *> * varDecls) : ASTNode(){
-		myVarDecls = *varDecls;
-	}
-	void unparse(std::ostream& out, int indent);
-private:
-	std::list<VarDeclNode *> myVarDecls;
 };
 
 class VarDeclNode : public DeclNode{
@@ -175,6 +173,19 @@ private:
 	IdNode * myId;
 	int mySize;
 };
+
+
+class VarDeclListNode : public ASTNode{
+public:
+	VarDeclListNode(std::list<DeclNode *> * varDecls) : ASTNode(){
+		myVarDecls = *varDecls;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	std::list<DeclNode *> myVarDecls;
+};
+
+
 
 class FormalDeclNode : public DeclNode{
 public:
@@ -208,13 +219,11 @@ public:
 
 class StmtNode : public ASTNode{
 public:
-	StmtNode() : ASTNode(){
 
-	}
 	virtual void unparse(std::ostream& out, int indent) = 0;
-	void doIndent(std::ostream& out, int indent){
-		for (int k = 0 ; k < indent; k++){ out << " "; }
-	}
+	/*void doIndent(std::ostream& out, int indent){
+		for (int k = 0 ; k < indent; k++){ out << " "; }*/
+
 };
 
 
@@ -232,7 +241,7 @@ public:
 
 class FnBodyNode : public ASTNode{
 public:
-	FnBodyNode(VarDeclListNode * declList, StmtListNode * stmtList) : ASTNode(){
+	FnBodyNode(DeclListNode * declList, StmtListNode * stmtList) : ASTNode(){
 		myDeclList = declList;
 		myStmtList = stmtList;
 		//mySize = size;
@@ -240,7 +249,7 @@ public:
 	void unparse(std::ostream& out, int indent);
 
 private:
-	VarDeclListNode * myDeclList;
+	DeclListNode * myDeclList;
 	StmtListNode * myStmtList;
 	//int mySize;
 };
@@ -280,7 +289,7 @@ private:
 
 class StructBodyNode : public DeclNode{
 public:
-	StructBodyNode(std::list<VarDeclNode *> * varDecls) : DeclNode(){
+	StructBodyNode(std::list<DeclNode *> * varDecls) : DeclNode(){
 
 	}
 	void unparse(std::ostream& out, int indent);
@@ -291,7 +300,7 @@ public:
 
 class StructDeclNode : public DeclNode{
 public:
-	StructDeclNode(IdNode * id, StructBodyNode * str) : DeclNode(){
+	StructDeclNode(IdNode * id, DeclListNode * str) : DeclNode(){
 		myId = id;
 		myStructBody = str;
 		//mySize = size;
@@ -300,7 +309,7 @@ public:
 
 private:
 	IdNode * myId;
-	StructBodyNode * myStructBody;
+	DeclListNode * myStructBody;
 	//int mySize;
 };
 
@@ -390,7 +399,7 @@ public:
 
 class IfStmtNode : public StmtNode{
 public:
-	IfStmtNode(ExpNode * expNode, VarDeclListNode * declList, StmtListNode * stmtList) : StmtNode(){
+	IfStmtNode(ExpNode * expNode, DeclListNode * declList, StmtListNode * stmtList) : StmtNode(){
 		myExpNode = expNode;
 		myDeclList = declList;
 		myStmtList = stmtList;
@@ -398,13 +407,13 @@ public:
 	void unparse(std::ostream& out, int indent);
 
 	ExpNode * myExpNode;
-	VarDeclListNode * myDeclList;
+	DeclListNode * myDeclList;
 	StmtListNode * myStmtList;
 };
 
 class IfElseStmtNode : public StmtNode{
 public:
-	IfElseStmtNode(ExpNode * expNode, VarDeclListNode * declList1, StmtListNode * stmtList1, VarDeclListNode * declList2, StmtListNode * stmtList2) : StmtNode(){
+	IfElseStmtNode(ExpNode * expNode, DeclListNode * declList1, StmtListNode * stmtList1, DeclListNode * declList2, StmtListNode * stmtList2) : StmtNode(){
 		myExpNode = expNode;
 		myDeclList1 = declList1;
 		myStmtList1 = stmtList1;
@@ -414,15 +423,15 @@ public:
 	void unparse(std::ostream& out, int indent);
 
 	ExpNode * myExpNode;
-	VarDeclListNode * myDeclList1;
+	DeclListNode * myDeclList1;
 	StmtListNode * myStmtList1;
-	VarDeclListNode * myDeclList2;
+	DeclListNode * myDeclList2;
 	StmtListNode * myStmtList2;
 };
 
 class WhileStmtNode : public StmtNode{
 public:
-	WhileStmtNode(ExpNode * expNode, VarDeclListNode * declList, StmtListNode * stmtList) : StmtNode(){
+	WhileStmtNode(ExpNode * expNode, DeclListNode * declList, StmtListNode * stmtList) : StmtNode(){
 			myExpNode = expNode;
 			myDeclList = declList;
 			myStmtList = stmtList;
@@ -431,7 +440,7 @@ public:
 
 
 	ExpNode * myExpNode;
-	VarDeclListNode * myDeclList;
+	DeclListNode * myDeclList;
 	StmtListNode * myStmtList;
 };
 
@@ -473,44 +482,47 @@ public:
 class IntLitNode : public ExpNode{
 public:
 	IntLitNode(IntLitToken * v) : ExpNode(){
-		val = v;
+		val = v->value();
 	}
 	void unparse(std::ostream& out, int indent);
 private:
-	IntLitToken * val;
+	int val;
 };
 
 class StrLitNode : public ExpNode{
 public:
 	StrLitNode(StringLitToken * v) : ExpNode(){
-		val = v;
+		val = v->value();
 	}
 	void unparse(std::ostream& out, int indent);
 private:
-	StringLitToken * val;
+	std::string val;
 };
 
 class TrueNode : public ExpNode{
 public:
 	TrueNode() : ExpNode(){
-
+    val = true;
 	}
 	void unparse(std::ostream& out, int indent);
+private:
+  bool val;
 };
 
 class FalseNode : public ExpNode{
 public:
 	FalseNode() : ExpNode(){
-
+    val = false;
 	}
 	void unparse(std::ostream& out, int indent);
+private:
+  bool val;
 };
 
 /*
 class IdNode : public ExpNode{
 public:
 	IdNode() : ExpNode(){
-
 	}
 	void unparse(std::ostream& out, int indent);
 };
@@ -534,12 +546,12 @@ public:
 
 class UnaryExpNode : public ExpNode{
 public:
-	UnaryExpNode(ExpNode * expNode) : ExpNode(){
+	/*UnaryExpNode(ExpNode * expNode) : ExpNode(){
 		myExp = expNode;
-	}
+	}*/
 	virtual void unparse(std::ostream& out, int indent);
 
-	ExpNode * myExp;
+	//ExpNode * myExp;
 };
 
 class UnaryMinusNode : public ExpNode{
@@ -564,9 +576,9 @@ public:
 
 class BinaryExpNode : public ExpNode{
 public:
-	BinaryExpNode() : ExpNode(){
+	/*BinaryExpNode() : ExpNode(){
 
-	}
+	}*/
 	virtual void unparse(std::ostream& out, int indent);
 
 
@@ -748,6 +760,16 @@ public:
 	BoolNode(): TypeNode(){
 	}
 	void unparse(std::ostream& out, int indent);
+};
+
+class StructNode : public TypeNode{
+public:
+  StructNode(IdNode * id) : TypeNode(){
+    myId = id;
+  }
+  void unparse(std::ostream& out, int indent);
+private:
+  IdNode * myId;
 };
 
 

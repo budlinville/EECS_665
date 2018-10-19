@@ -1,3 +1,4 @@
+
 #include "ast.hpp"
 
 namespace LILC{
@@ -32,9 +33,9 @@ void VarDeclNode::unparse(std::ostream& out, int indent){
 
 void StructDeclNode::unparse(std::ostream& out, int indent){
 	doIndent(out, indent);
-	out << "struct " << myId << " {\n";
+	out << "struct " << myId->unparse(out,0) << " {\n";
 	myStructBody->unparse(out, indent + 1);
-	doIndent(out, indent);
+	//doIndent(out, indent);
 	out << "\n};";
 }
 
@@ -52,8 +53,10 @@ void FnDeclNode::unparse(std::ostream& out, int indent){
 	myType->unparse(out, indent);
 	out << " ";
 	myId->unparse(out, indent);
+  out << "(";
 	myFormals->unparse(out, indent);
-	myFnBody->unparse(out, (indent+1));
+  out << ")";
+	myFnBody->unparse(out, (indent));
 }
 
 void FormalsNode::unparse(std::ostream& out, int indent){
@@ -81,11 +84,13 @@ void FormalsListNode::unparse(std::ostream& out, int indent){
 }
 
 void FnBodyNode::unparse(std::ostream& out, int indent){
-	out << "{";
+  doIndent(out, indent);
+  out << "{";
 	myDeclList->unparse(out, (indent+1));
 	myStmtList->unparse(out, (indent+1));
-	out << "\n";
-	doIndent(out, indent);
+  doIndent(out, indent);
+
+
 	out << "}\n\n";
 }
 
@@ -208,6 +213,7 @@ void CallExpNode::unparse(std::ostream& out, int indent){
 void CallStmtNode::unparse(std::ostream& out, int indent){
 	doIndent(out, indent);
 	myCallExp->unparse(out, 0);
+  out << ";\n";
 }
 
 void ReturnStmtNode::unparse(std::ostream& out, int indent){
@@ -216,7 +222,7 @@ void ReturnStmtNode::unparse(std::ostream& out, int indent){
 	if (myExpNode != nullptr) {
 		out << " ";
 		myExpNode->unparse(out, 0);
-		out << " ";
+		//out << " ";
 	}
 	out << ";\n";
 }
@@ -226,7 +232,7 @@ void IntLitNode::unparse(std::ostream& out, int indent){
 }
 
 void StrLitNode::unparse(std::ostream& out, int indent){
-	out << "\"" << val << "\"";
+	out << val;
 }
 
 void TrueNode::unparse(std::ostream& out, int indent){
@@ -264,74 +270,86 @@ void NotNode::unparse(std::ostream& out, int indent){
 void BinaryExpNode::unparse(std::ostream& out, int indent){/* virtual */}
 
 void PlusNode::unparse(std::ostream& out, int indent){
-	myExp1->unparse(out, indent);
+  doIndent(out, indent);
+  myExp1->unparse(out, indent);
 	out << " + ";
 	myExp2->unparse(out, indent);
 
 }
 void MinusNode::unparse(std::ostream& out, int indent){
-	myExp1->unparse(out, indent);
+  doIndent(out, indent);
+  myExp1->unparse(out, indent);
 	out << " - ";
 	myExp2->unparse(out, indent);
 }
 
 void TimesNode::unparse(std::ostream& out, int indent){
-	myExp1->unparse(out, indent);
+  doIndent(out, indent);
+  myExp1->unparse(out, indent);
 	out << " * ";
 	myExp2->unparse(out, indent);
 }
 
 void DivideNode::unparse(std::ostream& out, int indent){
-	myExp1->unparse(out, indent);
+  doIndent(out, indent);
+  myExp1->unparse(out, indent);
 	out << " / ";
 	myExp2->unparse(out, indent);
 }
 
 void AndNode::unparse(std::ostream& out, int indent){
-	myExp1->unparse(out, indent);
+  doIndent(out, indent);
+  myExp1->unparse(out, indent);
 	out << " && ";
 	myExp2->unparse(out, indent);
 }
 
 void OrNode::unparse(std::ostream& out, int indent){
-	myExp1->unparse(out, indent);
+  doIndent(out, indent);
+  myExp1->unparse(out, indent);
 	out << " || ";
 	myExp2->unparse(out, indent);
 }
 
 void EqualsNode::unparse(std::ostream& out, int indent){
-	myExp1->unparse(out, indent);
+  doIndent(out, indent);
+  myExp1->unparse(out, indent);
 	out << " == ";
 	myExp2->unparse(out, indent);
 }
 
 
 void NotEqualsNode::unparse(std::ostream& out, int indent){
-	myExp1->unparse(out, indent);
+  doIndent(out, indent);
+  myExp1->unparse(out, indent);
 	out << " != ";
 	myExp2->unparse(out, indent);
 }
 
 void LessNode::unparse(std::ostream& out, int indent){
-	myExp1->unparse(out, indent);
+  doIndent(out, indent);
+  myExp1->unparse(out, indent);
 	out << " < ";
 	myExp2->unparse(out, indent);
 }
 
 void GreaterNode::unparse(std::ostream& out, int indent){
-	myExp1->unparse(out, indent);
+  doIndent(out, indent);
+  myExp1->unparse(out, indent);
 	out << " > ";
 	myExp2->unparse(out, indent);
 }
 
 void LessEqNode::unparse(std::ostream& out, int indent){
-	myExp1->unparse(out, indent);
+  doIndent(out, indent);
+  myExp1->unparse(out, indent);
 	out << " <= ";
 	myExp2->unparse(out, indent);
 }
 
 void GreaterEqNode::unparse(std::ostream& out, int indent){
-	myExp1->unparse(out, indent);
+  doIndent(out, indent);
+  myExp1->unparse(out, indent);
 	out << " >= ";
 	myExp2->unparse(out, indent);
 }

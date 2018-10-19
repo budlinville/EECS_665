@@ -156,7 +156,7 @@
 %type <expNode> exp
 %type <expListNode> actualList
 %type <callExpNode> fncall
-%type <dotAccessNode> loc
+%type <expNode> loc
 %type <unaryExpNode> term
 %type <assignNode> assignExp
 
@@ -164,6 +164,15 @@
 /* NOTE: Make sure to add precedence and associativity
  * declarations
 */
+
+%left ASSIGN
+%right DOT
+%left AND OR
+%nonassoc EQUALS NOTEQUALS LESS LESSEQ GREATER GREATEREQ
+%left PLUS MINUS
+%left TIMES DIVIDE
+%left UMINUS NOT
+
 %%
 
 program : declList {
@@ -190,22 +199,24 @@ varDeclList : varDeclList varDecl {
     $1->push_back($2);
 	$$ = $1;
 } | /* epsilon */ {
-	$$ = new std::list<VarDeclNode *>();
+	$$ = new std::list<DeclNode *>();
 };
 
 
 varDecl : type id SEMICOLON {
     $$ = new VarDeclNode($1, $2, VarDeclNode::NOT_STRUCT);
+} | STRUCT id id SEMICOLON {
+    $$ = new VarDeclNode(new StructNode($2), $3, 0);
 };
 
 
 fnDecl: type id formals fnBody {
-    $$ = new FnDeclNode($1, $2, $3, $4);
+    $$ = new FnDeclNode($1, $2, new FormalsListNode($3), $4);
 };
 
 
 structDecl : STRUCT id LCURLY structBody RCURLY SEMICOLON {
-    $$ = new StructDeclNode($2, $4);
+    $$ = new StructDeclNode($2, new DeclListNode($4));
 };
 
 
@@ -213,22 +224,26 @@ structBody : structBody varDecl {
     $1->myVarDecls.push_back($2);
     $$ = $1;
 } | varDecl {
-    $$ = new StructBodyNode(new std::list<VarDeclNode *>());
+    std::list<DeclNode*>* list = new std::list<DeclNode*>;
+    list->push_back($1);
+    $$ = list;
 };
 
 
 formals : LPAREN RPAREN {
-  $$ = new FormalsNode(new FormalsListNode(new std::list<FormalDeclNode *>()));
+  $$ = new std::list<FormalDeclNode*>();;
 } | LPAREN formalsList RPAREN {
-  $$ = new FormalsNode($2);
+  $$ = $2;
 };
 
 
 formalsList : formalDecl {
-  $$ = new FormalsListNode(new std::list<FormalDeclNode *>());
+    std::list<FormalDeclNode*>* list = new std::list<FormalDeclNode*>;
+    list->push_back($1);
+    $$ = list;
 } | formalDecl COMMA formalsList {
-  $3->myFormalDecls->push_back($1);
-  $$ = $3;
+    $3->push_front($1);
+    $$ = $3;
 };
 
 
@@ -238,97 +253,75 @@ formalDecl : type id {
 
 
 fnBody : LCURLY varDeclList stmtList RCURLY {
-  $$ = new FnBodyNode(new VarDeclListNode($2), $3);
+  $$ = new FnBodyNode(new DeclListNode($2), new StmtListNode($3));
 };
 
 
 stmtList : stmtList stmt {
-  $1->myStmtNodes->push_back($2);
-  $$ = $1;
+    1->push_back($2);
+    $$ = $1;
 } | /* epsilon */ {
-  $$ = new StmtListNode(new std::list<StmtNode *>());
+  $$ = new std::list<StmtNode *>();
 };
 
 
 stmt : assignExp SEMICOLON {
   $$ = new AssignStmtNode($1);
-
 } | loc PLUSPLUS SEMICOLON {
   $$ = new PostIncStmtNode($1);
-
 } | loc MINUSMINUS SEMICOLON {
   $$ = new PostDecStmtNode($1);
-
 } | INPUT READ loc SEMICOLON {
   $$ = new ReadStmtNode($3);
-
 } | OUTPUT WRITE exp SEMICOLON {
   $$ = new WriteStmtNode($3);
-
 } | IF LPAREN exp RPAREN LCURLY varDeclList stmtList RCURLY {
-  $$ = new IfStmtNode($3, new VarDeclListNode($6), $7);
-
+  $$ = new IfStmtNode($3, new DeclListNode($6), new StmtListNode($7));
 } | IF LPAREN exp RPAREN LCURLY varDeclList stmtList RCURLY ELSE LCURLY varDeclList stmtList RCURLY {
-  $$ = new IfElseStmtNode($3, new VarDeclListNode($6), $7, new VarDeclListNode($11), $12);
-
+  $$ = new IfElseStmtNode($3, new DeclListNode($6), new StmtListNode($7), new DeclListNode($11), new StmtListNode($12));
 } | WHILE LPAREN exp RPAREN LCURLY varDeclList stmtList RCURLY {
-  $$ = new WhileStmtNode($3, new VarDeclListNode($6), $7);
-
+  $$ = new WhileStmtNode($3, new DeclListNode($6), new StmtListNode($7));
 } | RETURN exp SEMICOLON {
   $$ = new ReturnStmtNode($2);
-
 } | RETURN SEMICOLON {
-  $$ = new ReturnStmtNode(new ExpNode());
-
+  $$ = new ReturnStmtNode(nullptr);
 } | fncall SEMICOLON {
   $$ = new CallStmtNode($1);
 };
 
 
-exp : exp PLUS exp {
+exp : assignExp {
+  $$ = $1;
+} | exp PLUS exp {
   $$ = new PlusNode($1, $3);
-
 } | exp MINUS exp {
   $$ = new MinusNode($1, $3);
-
 } | exp TIMES exp {
   $$ = new TimesNode($1, $3);
-
 } | exp DIVIDE exp {
   $$ = new DivideNode($1, $3);
-
 } | NOT exp {
   $$ = new NotNode($2);
-
 } | exp AND exp {
   $$ = new AndNode($1, $3);
-
 } | exp OR exp {
   $$ = new OrNode($1, $3);
-
 } | exp EQUALS exp {
   $$ = new EqualsNode($1, $3);
-
 } | exp NOTEQUALS exp {
   $$ = new NotEqualsNode($1, $3);
-
 } | exp LESS exp {
   $$ = new LessNode($1, $3);
-
 } | exp GREATER exp {
   $$ = new GreaterNode($1, $3);
-
 } | exp LESSEQ exp {
   $$ = new LessEqNode($1, $3);
-
 } | exp GREATEREQ exp {
   $$ = new GreaterEqNode($1, $3);
-
-} | MINUS term {
+} | MINUS term %prec UMINUS {
   $$ = new UnaryMinusNode($2);
-
 } | term {
-  $$ = new UnaryExpNode($1);
+  $$ = $1;
 };
 
 
@@ -338,41 +331,36 @@ assignExp : loc ASSIGN exp {
 
 
 term : loc {
-    //TODO: implement this?
+    $$ = $1;
 } | INTLITERAL {
-  $$ = new UnaryExpNode(new IntLitNode($1));
-
+  $$ = new IntLitNode($1);
 } | STRINGLITERAL {
-  $$ = new UnaryExpNode(new StrLitNode($1));
-
+  $$ = new StrLitNode($1);
 } | TRUE {
-  $$ = new UnaryExpNode(new TrueNode());
-
+  $$ = new TrueNode();
 } | FALSE {
-  $$ = new UnaryExpNode(new FalseNode());
-
+  $$ = new FalseNode();
 } | LPAREN exp RPAREN {
-  $$ = new UnaryExpNode($2);
-
+  $$ = $2;
 } | fncall {
-  $$ = new UnaryExpNode($1);
+  $$ = $1;
 };
 
 
 fncall : id LPAREN RPAREN {
   $$ = new CallExpNode($1, new ExpListNode(new std::list<ExpNode *>()));
-
 } | id LPAREN actualList RPAREN {
-  $$ = new CallExpNode($1, $3);
-
+  $$ = new CallExpNode($1, new ExpListNode($3));
 };
 
 
 actualList : exp {
-  $$ = new ExpListNode(new std::list<ExpNode *>());
+  std::list<ExpNode*>* list = new std::list<ExpNode*>();
+  list->push_back($1);
+  $$ = $1;
 
 } | actualList COMMA exp {
-  $1->myExpNodes->push_back($3);
+  $1->push_back($3);
   $$ = $1;
 
 };
@@ -381,11 +369,11 @@ actualList : exp {
 
 type : INT { $$ = new IntNode(); };
 type : BOOL { $$ = new BoolNode(); };
-type : VOID {};
+type : VOID { $$ = new VoidNode(); };
 
 
 loc : id {
-  $$ = new DotAccessNode(new ExpNode() , $1);
+  $$ = $1;
 } | loc DOT id {
   $$ = new DotAccessNode($1, $3);
 };

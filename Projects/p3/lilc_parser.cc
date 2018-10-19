@@ -523,7 +523,7 @@ namespace LILC {
           switch (yyn)
             {
   case 2:
-#line 169 "lilc.yy" // lalr1.cc:847
+#line 178 "lilc.yy" // lalr1.cc:847
     {
     //$$ = new ProgramNode(new DeclListNode($1));
     (yylhs.value.programNode) = new ProgramNode(new DeclListNode((yystack_[0].value.declList)));
@@ -533,7 +533,7 @@ namespace LILC {
     break;
 
   case 3:
-#line 176 "lilc.yy" // lalr1.cc:847
+#line 185 "lilc.yy" // lalr1.cc:847
     {
     (yystack_[1].value.declList)->push_back((yystack_[0].value.declNode));
 	(yylhs.value.declList) = (yystack_[1].value.declList);
@@ -542,7 +542,7 @@ namespace LILC {
     break;
 
   case 4:
-#line 179 "lilc.yy" // lalr1.cc:847
+#line 188 "lilc.yy" // lalr1.cc:847
     {
 	(yylhs.value.declList) = new std::list<DeclNode *>();
 }
@@ -550,25 +550,25 @@ namespace LILC {
     break;
 
   case 5:
-#line 184 "lilc.yy" // lalr1.cc:847
+#line 193 "lilc.yy" // lalr1.cc:847
     { (yylhs.value.declNode) = (yystack_[0].value.varDeclNode); }
 #line 556 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 6:
-#line 185 "lilc.yy" // lalr1.cc:847
+#line 194 "lilc.yy" // lalr1.cc:847
     { (yylhs.value.declNode) = (yystack_[0].value.structDeclNode); }
 #line 562 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 7:
-#line 186 "lilc.yy" // lalr1.cc:847
+#line 195 "lilc.yy" // lalr1.cc:847
     { (yylhs.value.declNode) = (yystack_[0].value.fnDeclNode); }
 #line 568 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 8:
-#line 189 "lilc.yy" // lalr1.cc:847
+#line 198 "lilc.yy" // lalr1.cc:847
     {
     (yystack_[1].value.varDeclList)->push_back((yystack_[0].value.varDeclNode));
 	(yylhs.value.varDeclList) = (yystack_[1].value.varDeclList);
@@ -577,15 +577,15 @@ namespace LILC {
     break;
 
   case 9:
-#line 192 "lilc.yy" // lalr1.cc:847
+#line 201 "lilc.yy" // lalr1.cc:847
     {
-	(yylhs.value.varDeclList) = new std::list<VarDeclNode *>();
+	(yylhs.value.varDeclList) = new std::list<DeclNode *>();
 }
 #line 585 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 10:
-#line 197 "lilc.yy" // lalr1.cc:847
+#line 206 "lilc.yy" // lalr1.cc:847
     {
     (yylhs.value.varDeclNode) = new VarDeclNode((yystack_[2].value.typeNode), (yystack_[1].value.idNode), VarDeclNode::NOT_STRUCT);
 }
@@ -593,484 +593,475 @@ namespace LILC {
     break;
 
   case 11:
-#line 202 "lilc.yy" // lalr1.cc:847
+#line 208 "lilc.yy" // lalr1.cc:847
     {
-    (yylhs.value.fnDeclNode) = new FnDeclNode((yystack_[3].value.typeNode), (yystack_[2].value.idNode), (yystack_[1].value.formalsNode), (yystack_[0].value.fnBodyNode));
+    (yylhs.value.varDeclNode) = new VarDeclNode(new StructNode((yystack_[2].value.idNode)), (yystack_[1].value.idNode), 0);
 }
 #line 601 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 12:
-#line 207 "lilc.yy" // lalr1.cc:847
+#line 213 "lilc.yy" // lalr1.cc:847
     {
-    (yylhs.value.structDeclNode) = new StructDeclNode((yystack_[4].value.idNode), (yystack_[2].value.structBodyNode));
+    (yylhs.value.fnDeclNode) = new FnDeclNode((yystack_[3].value.typeNode), (yystack_[2].value.idNode), new FormalsListNode((yystack_[1].value.formalsNode)), (yystack_[0].value.fnBodyNode));
 }
 #line 609 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 13:
-#line 212 "lilc.yy" // lalr1.cc:847
+#line 218 "lilc.yy" // lalr1.cc:847
     {
-    (yystack_[1].value.structBodyNode)->myVarDecls.push_back((yystack_[0].value.varDeclNode));
-    (yylhs.value.structBodyNode) = (yystack_[1].value.structBodyNode);
+    (yylhs.value.structDeclNode) = new StructDeclNode((yystack_[4].value.idNode), new DeclListNode((yystack_[2].value.structBodyNode)));
 }
-#line 618 "lilc_parser.cc" // lalr1.cc:847
+#line 617 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 14:
-#line 215 "lilc.yy" // lalr1.cc:847
+#line 223 "lilc.yy" // lalr1.cc:847
     {
-    (yylhs.value.structBodyNode) = new StructBodyNode(new std::list<VarDeclNode *>());
+    (yystack_[1].value.structBodyNode)->myVarDecls.push_back((yystack_[0].value.varDeclNode));
+    (yylhs.value.structBodyNode) = (yystack_[1].value.structBodyNode);
 }
 #line 626 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 15:
-#line 220 "lilc.yy" // lalr1.cc:847
+#line 226 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.formalsNode) = new FormalsNode(new FormalsListNode(new std::list<FormalDeclNode *>()));
+    std::list<DeclNode*>* list = new std::list<DeclNode*>;
+    list->push_back((yystack_[0].value.varDeclNode));
+    (yylhs.value.structBodyNode) = list;
 }
-#line 634 "lilc_parser.cc" // lalr1.cc:847
+#line 636 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 16:
-#line 222 "lilc.yy" // lalr1.cc:847
+#line 233 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.formalsNode) = new FormalsNode((yystack_[1].value.formalsListNode));
+  (yylhs.value.formalsNode) = new std::list<FormalDeclNode*>();;
 }
-#line 642 "lilc_parser.cc" // lalr1.cc:847
+#line 644 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 17:
-#line 227 "lilc.yy" // lalr1.cc:847
+#line 235 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.formalsListNode) = new FormalsListNode(new std::list<FormalDeclNode *>());
+  (yylhs.value.formalsNode) = (yystack_[1].value.formalsListNode);
 }
-#line 650 "lilc_parser.cc" // lalr1.cc:847
+#line 652 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 18:
-#line 229 "lilc.yy" // lalr1.cc:847
+#line 240 "lilc.yy" // lalr1.cc:847
     {
-  (yystack_[0].value.formalsListNode)->myFormalDecls->push_back((yystack_[2].value.formalDeclNode));
-  (yylhs.value.formalsListNode) = (yystack_[0].value.formalsListNode);
+    std::list<FormalDeclNode*>* list = new std::list<FormalDeclNode*>;
+    list->push_back((yystack_[0].value.formalDeclNode));
+    (yylhs.value.formalsListNode) = list;
 }
-#line 659 "lilc_parser.cc" // lalr1.cc:847
+#line 662 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 19:
-#line 235 "lilc.yy" // lalr1.cc:847
+#line 244 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.formalDeclNode) = new FormalDeclNode((yystack_[1].value.typeNode), (yystack_[0].value.idNode));
+    (yystack_[0].value.formalsListNode)->push_front((yystack_[2].value.formalDeclNode));
+    (yylhs.value.formalsListNode) = (yystack_[0].value.formalsListNode);
 }
-#line 667 "lilc_parser.cc" // lalr1.cc:847
+#line 671 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 20:
-#line 240 "lilc.yy" // lalr1.cc:847
+#line 250 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.fnBodyNode) = new FnBodyNode(new VarDeclListNode((yystack_[2].value.varDeclList)), (yystack_[1].value.stmtListNode));
+  (yylhs.value.formalDeclNode) = new FormalDeclNode((yystack_[1].value.typeNode), (yystack_[0].value.idNode));
 }
-#line 675 "lilc_parser.cc" // lalr1.cc:847
+#line 679 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 21:
-#line 245 "lilc.yy" // lalr1.cc:847
+#line 255 "lilc.yy" // lalr1.cc:847
     {
-  (yystack_[1].value.stmtListNode)->myStmtNodes->push_back((yystack_[0].value.stmtNode));
-  (yylhs.value.stmtListNode) = (yystack_[1].value.stmtListNode);
+  (yylhs.value.fnBodyNode) = new FnBodyNode(new DeclListNode((yystack_[2].value.varDeclList)), new StmtListNode((yystack_[1].value.stmtListNode)));
 }
-#line 684 "lilc_parser.cc" // lalr1.cc:847
+#line 687 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 22:
-#line 248 "lilc.yy" // lalr1.cc:847
+#line 260 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.stmtListNode) = new StmtListNode(new std::list<StmtNode *>());
+    1->push_back((yystack_[0].value.stmtNode));
+    (yylhs.value.stmtListNode) = (yystack_[1].value.stmtListNode);
 }
-#line 692 "lilc_parser.cc" // lalr1.cc:847
+#line 696 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 23:
-#line 253 "lilc.yy" // lalr1.cc:847
+#line 263 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.stmtNode) = new AssignStmtNode((yystack_[1].value.assignNode));
-
+  (yylhs.value.stmtListNode) = new std::list<StmtNode *>();
 }
-#line 701 "lilc_parser.cc" // lalr1.cc:847
+#line 704 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 24:
-#line 256 "lilc.yy" // lalr1.cc:847
+#line 268 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.stmtNode) = new PostIncStmtNode((yystack_[2].value.dotAccessNode));
-
+  (yylhs.value.stmtNode) = new AssignStmtNode((yystack_[1].value.assignNode));
 }
-#line 710 "lilc_parser.cc" // lalr1.cc:847
+#line 712 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 25:
-#line 259 "lilc.yy" // lalr1.cc:847
+#line 270 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.stmtNode) = new PostDecStmtNode((yystack_[2].value.dotAccessNode));
-
+  (yylhs.value.stmtNode) = new PostIncStmtNode((yystack_[2].value.expNode));
 }
-#line 719 "lilc_parser.cc" // lalr1.cc:847
+#line 720 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 26:
-#line 262 "lilc.yy" // lalr1.cc:847
+#line 272 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.stmtNode) = new ReadStmtNode((yystack_[1].value.dotAccessNode));
-
+  (yylhs.value.stmtNode) = new PostDecStmtNode((yystack_[2].value.expNode));
 }
 #line 728 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 27:
-#line 265 "lilc.yy" // lalr1.cc:847
+#line 274 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.stmtNode) = new WriteStmtNode((yystack_[1].value.expNode));
-
+  (yylhs.value.stmtNode) = new ReadStmtNode((yystack_[1].value.expNode));
 }
-#line 737 "lilc_parser.cc" // lalr1.cc:847
+#line 736 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 28:
-#line 268 "lilc.yy" // lalr1.cc:847
+#line 276 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.stmtNode) = new IfStmtNode((yystack_[5].value.expNode), new VarDeclListNode((yystack_[2].value.varDeclList)), (yystack_[1].value.stmtListNode));
-
+  (yylhs.value.stmtNode) = new WriteStmtNode((yystack_[1].value.expNode));
 }
-#line 746 "lilc_parser.cc" // lalr1.cc:847
+#line 744 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 29:
-#line 271 "lilc.yy" // lalr1.cc:847
+#line 278 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.stmtNode) = new IfElseStmtNode((yystack_[10].value.expNode), new VarDeclListNode((yystack_[7].value.varDeclList)), (yystack_[6].value.stmtListNode), new VarDeclListNode((yystack_[2].value.varDeclList)), (yystack_[1].value.stmtListNode));
-
+  (yylhs.value.stmtNode) = new IfStmtNode((yystack_[5].value.expNode), new DeclListNode((yystack_[2].value.varDeclList)), new StmtListNode((yystack_[1].value.stmtListNode)));
 }
-#line 755 "lilc_parser.cc" // lalr1.cc:847
+#line 752 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 30:
-#line 274 "lilc.yy" // lalr1.cc:847
+#line 280 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.stmtNode) = new WhileStmtNode((yystack_[5].value.expNode), new VarDeclListNode((yystack_[2].value.varDeclList)), (yystack_[1].value.stmtListNode));
-
+  (yylhs.value.stmtNode) = new IfElseStmtNode((yystack_[10].value.expNode), new DeclListNode((yystack_[7].value.varDeclList)), new StmtListNode((yystack_[6].value.stmtListNode)), new DeclListNode((yystack_[2].value.varDeclList)), new StmtListNode((yystack_[1].value.stmtListNode)));
 }
-#line 764 "lilc_parser.cc" // lalr1.cc:847
+#line 760 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 31:
-#line 277 "lilc.yy" // lalr1.cc:847
+#line 282 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.stmtNode) = new ReturnStmtNode((yystack_[1].value.expNode));
-
+  (yylhs.value.stmtNode) = new WhileStmtNode((yystack_[5].value.expNode), new DeclListNode((yystack_[2].value.varDeclList)), new StmtListNode((yystack_[1].value.stmtListNode)));
 }
-#line 773 "lilc_parser.cc" // lalr1.cc:847
+#line 768 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 32:
-#line 280 "lilc.yy" // lalr1.cc:847
+#line 284 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.stmtNode) = new ReturnStmtNode(new ExpNode());
-
+  (yylhs.value.stmtNode) = new ReturnStmtNode((yystack_[1].value.expNode));
 }
-#line 782 "lilc_parser.cc" // lalr1.cc:847
+#line 776 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 33:
-#line 283 "lilc.yy" // lalr1.cc:847
+#line 286 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.stmtNode) = new CallStmtNode((yystack_[1].value.callExpNode));
+  (yylhs.value.stmtNode) = new ReturnStmtNode(nullptr);
 }
-#line 790 "lilc_parser.cc" // lalr1.cc:847
+#line 784 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 34:
 #line 288 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.expNode) = new PlusNode((yystack_[2].value.expNode), (yystack_[0].value.expNode));
-
+  (yylhs.value.stmtNode) = new CallStmtNode((yystack_[1].value.callExpNode));
 }
-#line 799 "lilc_parser.cc" // lalr1.cc:847
+#line 792 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 35:
-#line 291 "lilc.yy" // lalr1.cc:847
+#line 293 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.expNode) = new MinusNode((yystack_[2].value.expNode), (yystack_[0].value.expNode));
-
+  (yylhs.value.expNode) = (yystack_[0].value.assignNode);
 }
-#line 808 "lilc_parser.cc" // lalr1.cc:847
+#line 800 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 36:
-#line 294 "lilc.yy" // lalr1.cc:847
+#line 295 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.expNode) = new TimesNode((yystack_[2].value.expNode), (yystack_[0].value.expNode));
-
+  (yylhs.value.expNode) = new PlusNode((yystack_[2].value.expNode), (yystack_[0].value.expNode));
 }
-#line 817 "lilc_parser.cc" // lalr1.cc:847
+#line 808 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 37:
 #line 297 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.expNode) = new DivideNode((yystack_[2].value.expNode), (yystack_[0].value.expNode));
-
+  (yylhs.value.expNode) = new MinusNode((yystack_[2].value.expNode), (yystack_[0].value.expNode));
 }
-#line 826 "lilc_parser.cc" // lalr1.cc:847
+#line 816 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 38:
-#line 300 "lilc.yy" // lalr1.cc:847
+#line 299 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.expNode) = new NotNode((yystack_[0].value.expNode));
-
+  (yylhs.value.expNode) = new TimesNode((yystack_[2].value.expNode), (yystack_[0].value.expNode));
 }
-#line 835 "lilc_parser.cc" // lalr1.cc:847
+#line 824 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 39:
-#line 303 "lilc.yy" // lalr1.cc:847
+#line 301 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.expNode) = new AndNode((yystack_[2].value.expNode), (yystack_[0].value.expNode));
-
+  (yylhs.value.expNode) = new DivideNode((yystack_[2].value.expNode), (yystack_[0].value.expNode));
 }
-#line 844 "lilc_parser.cc" // lalr1.cc:847
+#line 832 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 40:
-#line 306 "lilc.yy" // lalr1.cc:847
+#line 303 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.expNode) = new OrNode((yystack_[2].value.expNode), (yystack_[0].value.expNode));
-
+  (yylhs.value.expNode) = new NotNode((yystack_[0].value.expNode));
 }
-#line 853 "lilc_parser.cc" // lalr1.cc:847
+#line 840 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 41:
-#line 309 "lilc.yy" // lalr1.cc:847
+#line 305 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.expNode) = new EqualsNode((yystack_[2].value.expNode), (yystack_[0].value.expNode));
-
+  (yylhs.value.expNode) = new AndNode((yystack_[2].value.expNode), (yystack_[0].value.expNode));
 }
-#line 862 "lilc_parser.cc" // lalr1.cc:847
+#line 848 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 42:
-#line 312 "lilc.yy" // lalr1.cc:847
+#line 307 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.expNode) = new NotEqualsNode((yystack_[2].value.expNode), (yystack_[0].value.expNode));
-
+  (yylhs.value.expNode) = new OrNode((yystack_[2].value.expNode), (yystack_[0].value.expNode));
 }
-#line 871 "lilc_parser.cc" // lalr1.cc:847
+#line 856 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 43:
-#line 315 "lilc.yy" // lalr1.cc:847
+#line 309 "lilc.yy" // lalr1.cc:847
+    {
+  (yylhs.value.expNode) = new EqualsNode((yystack_[2].value.expNode), (yystack_[0].value.expNode));
+}
+#line 864 "lilc_parser.cc" // lalr1.cc:847
+    break;
+
+  case 44:
+#line 311 "lilc.yy" // lalr1.cc:847
+    {
+  (yylhs.value.expNode) = new NotEqualsNode((yystack_[2].value.expNode), (yystack_[0].value.expNode));
+}
+#line 872 "lilc_parser.cc" // lalr1.cc:847
+    break;
+
+  case 45:
+#line 313 "lilc.yy" // lalr1.cc:847
     {
   (yylhs.value.expNode) = new LessNode((yystack_[2].value.expNode), (yystack_[0].value.expNode));
-
 }
 #line 880 "lilc_parser.cc" // lalr1.cc:847
     break;
 
-  case 44:
-#line 318 "lilc.yy" // lalr1.cc:847
+  case 46:
+#line 315 "lilc.yy" // lalr1.cc:847
     {
   (yylhs.value.expNode) = new GreaterNode((yystack_[2].value.expNode), (yystack_[0].value.expNode));
-
 }
-#line 889 "lilc_parser.cc" // lalr1.cc:847
-    break;
-
-  case 45:
-#line 321 "lilc.yy" // lalr1.cc:847
-    {
-  (yylhs.value.expNode) = new LessEqNode((yystack_[2].value.expNode), (yystack_[0].value.expNode));
-
-}
-#line 898 "lilc_parser.cc" // lalr1.cc:847
-    break;
-
-  case 46:
-#line 324 "lilc.yy" // lalr1.cc:847
-    {
-  (yylhs.value.expNode) = new GreaterEqNode((yystack_[2].value.expNode), (yystack_[0].value.expNode));
-
-}
-#line 907 "lilc_parser.cc" // lalr1.cc:847
+#line 888 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 47:
-#line 327 "lilc.yy" // lalr1.cc:847
+#line 317 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.expNode) = new UnaryMinusNode((yystack_[0].value.unaryExpNode));
-
+  (yylhs.value.expNode) = new LessEqNode((yystack_[2].value.expNode), (yystack_[0].value.expNode));
 }
-#line 916 "lilc_parser.cc" // lalr1.cc:847
+#line 896 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 48:
-#line 330 "lilc.yy" // lalr1.cc:847
+#line 319 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.expNode) = new UnaryExpNode((yystack_[0].value.unaryExpNode));
+  (yylhs.value.expNode) = new GreaterEqNode((yystack_[2].value.expNode), (yystack_[0].value.expNode));
 }
-#line 924 "lilc_parser.cc" // lalr1.cc:847
+#line 904 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 49:
-#line 335 "lilc.yy" // lalr1.cc:847
+#line 321 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.assignNode) = new AssignNode((yystack_[2].value.dotAccessNode), (yystack_[0].value.expNode));
+  (yylhs.value.expNode) = new UnaryMinusNode((yystack_[0].value.unaryExpNode));
 }
-#line 932 "lilc_parser.cc" // lalr1.cc:847
+#line 912 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 50:
-#line 340 "lilc.yy" // lalr1.cc:847
+#line 323 "lilc.yy" // lalr1.cc:847
     {
-    //TODO: implement this?
+  (yylhs.value.expNode) = (yystack_[0].value.unaryExpNode);
 }
-#line 940 "lilc_parser.cc" // lalr1.cc:847
+#line 920 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 51:
-#line 342 "lilc.yy" // lalr1.cc:847
+#line 328 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.unaryExpNode) = new UnaryExpNode(new IntLitNode((yystack_[0].value.intTokenValue)));
-
+  (yylhs.value.assignNode) = new AssignNode((yystack_[2].value.expNode), (yystack_[0].value.expNode));
 }
-#line 949 "lilc_parser.cc" // lalr1.cc:847
+#line 928 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 52:
-#line 345 "lilc.yy" // lalr1.cc:847
+#line 333 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.unaryExpNode) = new UnaryExpNode(new StrLitNode((yystack_[0].value.strTokenValue)));
-
+    (yylhs.value.unaryExpNode) = (yystack_[0].value.expNode);
 }
-#line 958 "lilc_parser.cc" // lalr1.cc:847
+#line 936 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 53:
-#line 348 "lilc.yy" // lalr1.cc:847
+#line 335 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.unaryExpNode) = new UnaryExpNode(new TrueNode());
-
+  (yylhs.value.unaryExpNode) = new IntLitNode((yystack_[0].value.intTokenValue));
 }
-#line 967 "lilc_parser.cc" // lalr1.cc:847
+#line 944 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 54:
-#line 351 "lilc.yy" // lalr1.cc:847
+#line 337 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.unaryExpNode) = new UnaryExpNode(new FalseNode());
+  (yylhs.value.unaryExpNode) = new StrLitNode((yystack_[0].value.strTokenValue));
+}
+#line 952 "lilc_parser.cc" // lalr1.cc:847
+    break;
 
+  case 55:
+#line 339 "lilc.yy" // lalr1.cc:847
+    {
+  (yylhs.value.unaryExpNode) = new TrueNode();
+}
+#line 960 "lilc_parser.cc" // lalr1.cc:847
+    break;
+
+  case 56:
+#line 341 "lilc.yy" // lalr1.cc:847
+    {
+  (yylhs.value.unaryExpNode) = new FalseNode();
+}
+#line 968 "lilc_parser.cc" // lalr1.cc:847
+    break;
+
+  case 57:
+#line 343 "lilc.yy" // lalr1.cc:847
+    {
+  (yylhs.value.unaryExpNode) = (yystack_[1].value.expNode);
 }
 #line 976 "lilc_parser.cc" // lalr1.cc:847
     break;
 
-  case 55:
-#line 354 "lilc.yy" // lalr1.cc:847
+  case 58:
+#line 345 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.unaryExpNode) = new UnaryExpNode((yystack_[1].value.expNode));
-
+  (yylhs.value.unaryExpNode) = (yystack_[0].value.callExpNode);
 }
-#line 985 "lilc_parser.cc" // lalr1.cc:847
+#line 984 "lilc_parser.cc" // lalr1.cc:847
     break;
 
-  case 56:
-#line 357 "lilc.yy" // lalr1.cc:847
-    {
-  (yylhs.value.unaryExpNode) = new UnaryExpNode((yystack_[0].value.callExpNode));
-}
-#line 993 "lilc_parser.cc" // lalr1.cc:847
-    break;
-
-  case 57:
-#line 362 "lilc.yy" // lalr1.cc:847
+  case 59:
+#line 350 "lilc.yy" // lalr1.cc:847
     {
   (yylhs.value.callExpNode) = new CallExpNode((yystack_[2].value.idNode), new ExpListNode(new std::list<ExpNode *>()));
-
 }
-#line 1002 "lilc_parser.cc" // lalr1.cc:847
+#line 992 "lilc_parser.cc" // lalr1.cc:847
     break;
 
-  case 58:
-#line 365 "lilc.yy" // lalr1.cc:847
+  case 60:
+#line 352 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.callExpNode) = new CallExpNode((yystack_[3].value.idNode), (yystack_[1].value.expListNode));
+  (yylhs.value.callExpNode) = new CallExpNode((yystack_[3].value.idNode), new ExpListNode((yystack_[1].value.expListNode)));
+}
+#line 1000 "lilc_parser.cc" // lalr1.cc:847
+    break;
+
+  case 61:
+#line 357 "lilc.yy" // lalr1.cc:847
+    {
+  std::list<ExpNode*>* list = new std::list<ExpNode*>();
+  list->push_back((yystack_[0].value.expNode));
+  (yylhs.value.expListNode) = (yystack_[0].value.expNode);
 
 }
 #line 1011 "lilc_parser.cc" // lalr1.cc:847
     break;
 
-  case 59:
-#line 371 "lilc.yy" // lalr1.cc:847
+  case 62:
+#line 362 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.expListNode) = new ExpListNode(new std::list<ExpNode *>());
-
-}
-#line 1020 "lilc_parser.cc" // lalr1.cc:847
-    break;
-
-  case 60:
-#line 374 "lilc.yy" // lalr1.cc:847
-    {
-  (yystack_[2].value.expListNode)->myExpNodes->push_back((yystack_[0].value.expNode));
+  (yystack_[2].value.expListNode)->push_back((yystack_[0].value.expNode));
   (yylhs.value.expListNode) = (yystack_[2].value.expListNode);
 
 }
-#line 1030 "lilc_parser.cc" // lalr1.cc:847
-    break;
-
-  case 61:
-#line 382 "lilc.yy" // lalr1.cc:847
-    { (yylhs.value.typeNode) = new IntNode(); }
-#line 1036 "lilc_parser.cc" // lalr1.cc:847
-    break;
-
-  case 62:
-#line 383 "lilc.yy" // lalr1.cc:847
-    { (yylhs.value.typeNode) = new BoolNode(); }
-#line 1042 "lilc_parser.cc" // lalr1.cc:847
+#line 1021 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 63:
-#line 384 "lilc.yy" // lalr1.cc:847
-    {}
-#line 1048 "lilc_parser.cc" // lalr1.cc:847
+#line 370 "lilc.yy" // lalr1.cc:847
+    { (yylhs.value.typeNode) = new IntNode(); }
+#line 1027 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 64:
-#line 387 "lilc.yy" // lalr1.cc:847
-    {
-  (yylhs.value.dotAccessNode) = new DotAccessNode(new ExpNode() , (yystack_[0].value.idNode));
-}
-#line 1056 "lilc_parser.cc" // lalr1.cc:847
+#line 371 "lilc.yy" // lalr1.cc:847
+    { (yylhs.value.typeNode) = new BoolNode(); }
+#line 1033 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 65:
-#line 389 "lilc.yy" // lalr1.cc:847
-    {
-  (yylhs.value.dotAccessNode) = new DotAccessNode((yystack_[2].value.dotAccessNode), (yystack_[0].value.idNode));
-}
-#line 1064 "lilc_parser.cc" // lalr1.cc:847
+#line 372 "lilc.yy" // lalr1.cc:847
+    { (yylhs.value.typeNode) = new VoidNode(); }
+#line 1039 "lilc_parser.cc" // lalr1.cc:847
     break;
 
   case 66:
-#line 394 "lilc.yy" // lalr1.cc:847
+#line 375 "lilc.yy" // lalr1.cc:847
+    {
+  (yylhs.value.expNode) = (yystack_[0].value.idNode);
+}
+#line 1047 "lilc_parser.cc" // lalr1.cc:847
+    break;
+
+  case 67:
+#line 377 "lilc.yy" // lalr1.cc:847
+    {
+  (yylhs.value.expNode) = new DotAccessNode((yystack_[2].value.expNode), (yystack_[0].value.idNode));
+}
+#line 1055 "lilc_parser.cc" // lalr1.cc:847
+    break;
+
+  case 68:
+#line 382 "lilc.yy" // lalr1.cc:847
     { (yylhs.value.idNode) = new IdNode((yystack_[0].value.idTokenValue)); }
-#line 1070 "lilc_parser.cc" // lalr1.cc:847
+#line 1061 "lilc_parser.cc" // lalr1.cc:847
     break;
 
 
-#line 1074 "lilc_parser.cc" // lalr1.cc:847
+#line 1065 "lilc_parser.cc" // lalr1.cc:847
             default:
               break;
             }
@@ -1232,169 +1223,178 @@ namespace LILC {
   }
 
 
-  const signed char LilC_Parser::yypact_ninf_ = -103;
+  const signed char LilC_Parser::yypact_ninf_ = -77;
 
   const signed char LilC_Parser::yytable_ninf_ = -1;
 
   const short int
   LilC_Parser::yypact_[] =
   {
-    -103,     1,   136,  -103,  -103,  -103,  -103,    30,  -103,  -103,
-    -103,  -103,    30,  -103,    -4,   -15,    78,    46,  -103,    41,
-    -103,    49,    30,  -103,    37,    38,    30,  -103,  -103,    43,
-    -103,    50,  -103,    78,  -103,    78,  -103,  -103,  -103,    65,
-      51,    66,    73,    75,    40,  -103,  -103,    79,    80,   -12,
-      88,    30,    90,    90,    90,  -103,  -103,  -103,  -103,    90,
-    -103,   214,    90,   158,  -103,  -103,    85,  -103,  -103,    30,
-      89,    92,    90,    83,     2,  -103,   178,    96,   117,   138,
-    -103,   206,  -103,    90,    90,    90,    90,    90,    90,    90,
-      90,    90,    90,    90,    90,  -103,  -103,  -103,   206,  -103,
-     206,     8,  -103,  -103,    94,    97,  -103,   206,   206,   206,
-     206,   206,   206,   206,   206,   206,   206,   206,   206,  -103,
-      90,  -103,  -103,   206,    78,    78,   213,   239,   106,  -103,
-     101,  -103,    78,   246,  -103
+     -77,    25,   139,   -77,   -77,   -77,   -77,    21,   -77,   -77,
+     -77,   -77,    21,   -77,    -2,   -19,   160,    30,    81,   -77,
+      37,    21,   -77,   100,    21,   -77,   -77,    45,    49,    21,
+     -77,   -77,    21,    57,   -77,    71,   -77,    78,   -77,   160,
+     -77,   -77,   -77,   253,    43,    70,    77,    96,     2,   -77,
+     -77,    95,   103,    33,   112,    21,    47,    47,    47,   -77,
+     -77,   -77,   -77,    47,   -77,   106,    47,   161,   -77,   -77,
+     -77,   -12,   -77,   -77,    21,   123,   124,    47,    94,     5,
+     -77,   181,    99,   120,   141,   -77,   129,   -77,   -77,    47,
+      47,    47,    47,    47,    47,    47,    47,    47,    47,    47,
+      47,   -77,   -77,   -77,   194,   -77,   194,    10,   -77,   -77,
+     130,   148,   -77,    75,    75,   -77,   -77,   207,   207,   220,
+     220,   220,   220,   220,   220,   -77,    47,   -77,   -77,   194,
+     160,   160,   260,   267,   155,   -77,   151,   -77,   160,   274,
+     -77
   };
 
   const unsigned char
   LilC_Parser::yydefact_[] =
   {
-       4,     0,     2,     1,    62,    61,    63,     0,     3,     5,
-       7,     6,     0,    66,     0,     0,     0,     0,    10,     0,
-      14,     0,     0,    15,     0,    17,     0,     9,    11,     0,
-      13,     0,    16,     0,    19,    22,    12,    18,     8,     0,
-       0,     0,     0,     0,     0,    20,    21,     0,     0,     0,
-      64,     0,     0,     0,     0,    53,    54,    51,    52,     0,
-      32,     0,     0,     0,    48,    56,    50,    23,    33,     0,
-       0,     0,     0,     0,     0,    64,     0,     0,     0,     0,
-      47,    38,    31,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,    65,    24,    25,    49,    57,
-      59,     0,    26,    27,     0,     0,    55,    34,    35,    36,
-      37,    39,    40,    41,    42,    43,    44,    45,    46,    58,
-       0,     9,     9,    60,    22,    22,     0,     0,    28,    30,
-       0,     9,    22,     0,    29
+       4,     0,     2,     1,    64,    63,    65,     0,     3,     5,
+       7,     6,     0,    68,     0,     0,     0,     0,     0,    10,
+       0,     0,    15,     0,     0,    11,    16,     0,    18,     0,
+       9,    12,     0,     0,    14,     0,    17,     0,    20,    23,
+      13,    19,     8,     0,     0,     0,     0,     0,     0,    21,
+      22,     0,     0,     0,    66,     0,     0,     0,     0,    55,
+      56,    53,    54,     0,    33,     0,     0,     0,    35,    50,
+      58,    52,    24,    34,     0,     0,     0,     0,     0,     0,
+      66,     0,     0,     0,     0,    49,    52,    40,    32,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,    67,    25,    26,    51,    59,    61,     0,    27,    28,
+       0,     0,    57,    36,    37,    38,    39,    41,    42,    43,
+      44,    45,    46,    47,    48,    60,     0,     9,     9,    62,
+      23,    23,     0,     0,    29,    31,     0,     9,    23,     0,
+      30
   };
 
-  const signed char
+  const short int
   LilC_Parser::yypgoto_[] =
   {
-    -103,  -103,  -103,  -103,  -102,     6,  -103,  -103,  -103,  -103,
-      91,  -103,  -103,   -59,  -103,   -49,  -103,    62,   -37,  -103,
-      13,   -39,    -1
+     -77,   -77,   -77,   -77,   -76,     7,   -77,   -77,   -77,   -77,
+     149,   -77,   -77,   -58,   -77,   -50,   -41,   111,   -39,   -77,
+      -1,   -43,    46
   };
 
   const signed char
   LilC_Parser::yydefgoto_[] =
   {
-      -1,     1,     2,     8,    35,    38,    10,    11,    21,    19,
-      24,    25,    28,    39,    46,    63,    47,    64,    65,   101,
-      22,    66,    50
+      -1,     1,     2,     8,    39,    42,    10,    11,    23,    20,
+      27,    28,    31,    43,    50,    67,    68,    69,    70,   107,
+      24,    71,    54
   };
 
-  const unsigned char
+  const short int
   LilC_Parser::yytable_[] =
   {
-      49,     3,    48,    76,    77,    78,    14,    17,     9,    18,
-      79,    15,    74,    81,    69,    12,    16,    70,    71,   124,
-     125,    31,    20,    98,   100,    34,   102,    30,    69,   132,
-      26,   119,    72,   120,   107,   108,   109,   110,   111,   112,
-     113,   114,   115,   116,   117,   118,    26,    13,    55,    56,
-      75,     4,     5,     6,     4,     5,     6,    13,    57,    58,
-      32,    27,    59,    33,    60,   126,   127,    36,    95,    23,
-      29,   123,    61,   133,    18,    62,    40,    41,    42,    51,
-      43,    44,    13,     4,     5,     6,    45,    49,    49,    48,
-      48,    55,    56,    52,    49,    53,    48,    54,    55,    56,
-      13,    57,    58,    67,    68,    59,    99,    13,    57,    58,
-      73,    69,    59,    96,   121,    61,    97,   122,    62,   104,
-     130,   131,    61,    80,    37,    62,     0,    83,    84,    85,
-      86,     0,    87,    88,    89,    90,    91,    92,    93,    94,
-     105,     4,     5,     6,     0,     0,     7,     0,    83,    84,
-      85,    86,     0,    87,    88,    89,    90,    91,    92,    93,
-      94,   106,     0,     0,     0,     0,     0,     0,     0,    83,
-      84,    85,    86,     0,    87,    88,    89,    90,    91,    92,
-      93,    94,    82,     0,     0,     0,     0,     0,     0,    83,
-      84,    85,    86,     0,    87,    88,    89,    90,    91,    92,
-      93,    94,   103,     0,     0,     0,     0,     0,     0,    83,
-      84,    85,    86,     0,    87,    88,    89,    90,    91,    92,
-      93,    94,    55,    56,    40,    41,    42,     0,    43,    44,
-      13,    13,    57,    58,   128,     0,    59,    83,    84,    85,
-      86,     0,    87,    88,    89,    90,    91,    92,    93,    94,
-      40,    41,    42,     0,    43,    44,    13,    40,    41,    42,
-     129,    43,    44,    13,     0,     0,     0,   134
+      53,    12,    51,    18,    52,    19,    81,    82,    83,     9,
+      59,    60,    79,    84,    74,    13,    87,    29,    16,    13,
+      61,    62,    86,    22,    63,     3,    64,   104,   106,   108,
+      34,    74,    77,   125,    65,   126,    29,    66,    13,   113,
+     114,   115,   116,   117,   118,   119,   120,   121,   122,   123,
+     124,   130,   131,    14,    25,    59,    60,    30,    15,    74,
+      17,   138,    75,    76,    13,    61,    62,    32,    36,    63,
+      35,    55,   132,   133,    37,    38,   129,    77,    17,    65,
+     139,    40,    66,     4,     5,     6,     4,     5,     6,    53,
+      53,    51,    51,    52,    52,    19,    53,    56,    51,    57,
+      52,    80,    59,    60,    26,     4,     5,     6,    91,    92,
+      21,    13,    61,    62,    59,    60,    63,   105,    58,    72,
+     101,    33,   110,    13,    61,    62,    65,    73,    63,    66,
+      89,    90,    91,    92,    78,    93,    94,    95,    96,    97,
+      98,    99,   100,   111,     4,     5,     6,   102,   103,     7,
+     127,    89,    90,    91,    92,    74,    93,    94,    95,    96,
+      97,    98,    99,   100,   112,     4,     5,     6,   128,   136,
+      21,   137,    89,    90,    91,    92,    85,    93,    94,    95,
+      96,    97,    98,    99,   100,    88,    41,     0,     0,     0,
+       0,     0,    89,    90,    91,    92,     0,    93,    94,    95,
+      96,    97,    98,    99,   100,   109,     0,     0,     0,     0,
+       0,     0,    89,    90,    91,    92,     0,    93,    94,    95,
+      96,    97,    98,    99,   100,    89,    90,    91,    92,     0,
+      93,    94,    95,    96,    97,    98,    99,   100,    89,    90,
+      91,    92,     0,     0,     0,    95,    96,    97,    98,    99,
+     100,    89,    90,    91,    92,     0,     0,     0,    -1,    -1,
+      -1,    -1,    -1,    -1,    44,    45,    46,     0,    47,    48,
+      13,    44,    45,    46,    49,    47,    48,    13,    44,    45,
+      46,   134,    47,    48,    13,    44,    45,    46,   135,    47,
+      48,    13,     0,     0,     0,   140
   };
 
   const short int
   LilC_Parser::yycheck_[] =
   {
-      39,     0,    39,    52,    53,    54,     7,    22,     2,    24,
-      59,    12,    51,    62,    26,     2,    20,    29,    30,   121,
-     122,    22,    16,    72,    73,    26,    24,    21,    26,   131,
-      17,    23,    44,    25,    83,    84,    85,    86,    87,    88,
-      89,    90,    91,    92,    93,    94,    33,    17,     8,     9,
-      51,     5,     6,     7,     5,     6,     7,    17,    18,    19,
-      23,    20,    22,    25,    24,   124,   125,    24,    69,    23,
-      21,   120,    32,   132,    24,    35,    11,    12,    13,    28,
-      15,    16,    17,     5,     6,     7,    21,   126,   127,   126,
-     127,     8,     9,    27,   133,    22,   133,    22,     8,     9,
-      17,    18,    19,    24,    24,    22,    23,    17,    18,    19,
-      22,    26,    22,    24,    20,    32,    24,    20,    35,    23,
-      14,    20,    32,    61,    33,    35,    -1,    31,    32,    33,
-      34,    -1,    36,    37,    38,    39,    40,    41,    42,    43,
-      23,     5,     6,     7,    -1,    -1,    10,    -1,    31,    32,
-      33,    34,    -1,    36,    37,    38,    39,    40,    41,    42,
-      43,    23,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    31,
-      32,    33,    34,    -1,    36,    37,    38,    39,    40,    41,
-      42,    43,    24,    -1,    -1,    -1,    -1,    -1,    -1,    31,
-      32,    33,    34,    -1,    36,    37,    38,    39,    40,    41,
-      42,    43,    24,    -1,    -1,    -1,    -1,    -1,    -1,    31,
-      32,    33,    34,    -1,    36,    37,    38,    39,    40,    41,
-      42,    43,     8,     9,    11,    12,    13,    -1,    15,    16,
-      17,    17,    18,    19,    21,    -1,    22,    31,    32,    33,
-      34,    -1,    36,    37,    38,    39,    40,    41,    42,    43,
-      11,    12,    13,    -1,    15,    16,    17,    11,    12,    13,
-      21,    15,    16,    17,    -1,    -1,    -1,    21
+      43,     2,    43,    22,    43,    24,    56,    57,    58,     2,
+       8,     9,    55,    63,    26,    17,    66,    18,    20,    17,
+      18,    19,    65,    16,    22,     0,    24,    77,    78,    24,
+      23,    26,    44,    23,    32,    25,    37,    35,    17,    89,
+      90,    91,    92,    93,    94,    95,    96,    97,    98,    99,
+     100,   127,   128,     7,    24,     8,     9,    20,    12,    26,
+      14,   137,    29,    30,    17,    18,    19,    21,    23,    22,
+      24,    28,   130,   131,    25,    29,   126,    44,    32,    32,
+     138,    24,    35,     5,     6,     7,     5,     6,     7,   132,
+     133,   132,   133,   132,   133,    24,   139,    27,   139,    22,
+     139,    55,     8,     9,    23,     5,     6,     7,    33,    34,
+      10,    17,    18,    19,     8,     9,    22,    23,    22,    24,
+      74,    21,    23,    17,    18,    19,    32,    24,    22,    35,
+      31,    32,    33,    34,    22,    36,    37,    38,    39,    40,
+      41,    42,    43,    23,     5,     6,     7,    24,    24,    10,
+      20,    31,    32,    33,    34,    26,    36,    37,    38,    39,
+      40,    41,    42,    43,    23,     5,     6,     7,    20,    14,
+      10,    20,    31,    32,    33,    34,    65,    36,    37,    38,
+      39,    40,    41,    42,    43,    24,    37,    -1,    -1,    -1,
+      -1,    -1,    31,    32,    33,    34,    -1,    36,    37,    38,
+      39,    40,    41,    42,    43,    24,    -1,    -1,    -1,    -1,
+      -1,    -1,    31,    32,    33,    34,    -1,    36,    37,    38,
+      39,    40,    41,    42,    43,    31,    32,    33,    34,    -1,
+      36,    37,    38,    39,    40,    41,    42,    43,    31,    32,
+      33,    34,    -1,    -1,    -1,    38,    39,    40,    41,    42,
+      43,    31,    32,    33,    34,    -1,    -1,    -1,    38,    39,
+      40,    41,    42,    43,    11,    12,    13,    -1,    15,    16,
+      17,    11,    12,    13,    21,    15,    16,    17,    11,    12,
+      13,    21,    15,    16,    17,    11,    12,    13,    21,    15,
+      16,    17,    -1,    -1,    -1,    21
   };
 
   const unsigned char
   LilC_Parser::yystos_[] =
   {
-       0,    46,    47,     0,     5,     6,     7,    10,    48,    50,
-      51,    52,    65,    17,    67,    67,    20,    22,    24,    54,
-      50,    53,    65,    23,    55,    56,    65,    20,    57,    21,
-      50,    67,    23,    25,    67,    49,    24,    55,    50,    58,
-      11,    12,    13,    15,    16,    21,    59,    61,    63,    66,
-      67,    28,    27,    22,    22,     8,     9,    18,    19,    22,
-      24,    32,    35,    60,    62,    63,    66,    24,    24,    26,
-      29,    30,    44,    22,    66,    67,    60,    60,    60,    60,
-      62,    60,    24,    31,    32,    33,    34,    36,    37,    38,
-      39,    40,    41,    42,    43,    67,    24,    24,    60,    23,
-      60,    64,    24,    24,    23,    23,    23,    60,    60,    60,
-      60,    60,    60,    60,    60,    60,    60,    60,    60,    23,
-      25,    20,    20,    60,    49,    49,    58,    58,    21,    21,
-      14,    20,    49,    58,    21
+       0,    47,    48,     0,     5,     6,     7,    10,    49,    51,
+      52,    53,    66,    17,    68,    68,    20,    68,    22,    24,
+      55,    10,    51,    54,    66,    24,    23,    56,    57,    66,
+      20,    58,    68,    21,    51,    68,    23,    25,    68,    50,
+      24,    56,    51,    59,    11,    12,    13,    15,    16,    21,
+      60,    62,    64,    67,    68,    28,    27,    22,    22,     8,
+       9,    18,    19,    22,    24,    32,    35,    61,    62,    63,
+      64,    67,    24,    24,    26,    29,    30,    44,    22,    67,
+      68,    61,    61,    61,    61,    63,    67,    61,    24,    31,
+      32,    33,    34,    36,    37,    38,    39,    40,    41,    42,
+      43,    68,    24,    24,    61,    23,    61,    65,    24,    24,
+      23,    23,    23,    61,    61,    61,    61,    61,    61,    61,
+      61,    61,    61,    61,    61,    23,    25,    20,    20,    61,
+      50,    50,    59,    59,    21,    21,    14,    20,    50,    59,
+      21
   };
 
   const unsigned char
   LilC_Parser::yyr1_[] =
   {
-       0,    45,    46,    47,    47,    48,    48,    48,    49,    49,
-      50,    51,    52,    53,    53,    54,    54,    55,    55,    56,
-      57,    58,    58,    59,    59,    59,    59,    59,    59,    59,
-      59,    59,    59,    59,    60,    60,    60,    60,    60,    60,
-      60,    60,    60,    60,    60,    60,    60,    60,    60,    61,
-      62,    62,    62,    62,    62,    62,    62,    63,    63,    64,
-      64,    65,    65,    65,    66,    66,    67
+       0,    46,    47,    48,    48,    49,    49,    49,    50,    50,
+      51,    51,    52,    53,    54,    54,    55,    55,    56,    56,
+      57,    58,    59,    59,    60,    60,    60,    60,    60,    60,
+      60,    60,    60,    60,    60,    61,    61,    61,    61,    61,
+      61,    61,    61,    61,    61,    61,    61,    61,    61,    61,
+      61,    62,    63,    63,    63,    63,    63,    63,    63,    64,
+      64,    65,    65,    66,    66,    66,    67,    67,    68
   };
 
   const unsigned char
   LilC_Parser::yyr2_[] =
   {
        0,     2,     1,     2,     0,     1,     1,     1,     2,     0,
-       3,     4,     6,     2,     1,     2,     3,     1,     3,     2,
-       4,     2,     0,     2,     3,     3,     4,     4,     8,    13,
-       8,     3,     2,     2,     3,     3,     3,     3,     2,     3,
-       3,     3,     3,     3,     3,     3,     3,     2,     1,     3,
-       1,     1,     1,     1,     1,     3,     1,     3,     4,     1,
-       3,     1,     1,     1,     1,     3,     1
+       3,     4,     4,     6,     2,     1,     2,     3,     1,     3,
+       2,     4,     2,     0,     2,     3,     3,     4,     4,     8,
+      13,     8,     3,     2,     2,     1,     3,     3,     3,     3,
+       2,     3,     3,     3,     3,     3,     3,     3,     3,     2,
+       1,     3,     1,     1,     1,     1,     1,     3,     1,     3,
+       4,     1,     3,     1,     1,     1,     1,     3,     1
   };
 
 
@@ -1410,8 +1410,8 @@ namespace LILC {
   "RCURLY", "LPAREN", "RPAREN", "SEMICOLON", "COMMA", "DOT", "WRITE",
   "READ", "PLUSPLUS", "MINUSMINUS", "PLUS", "MINUS", "TIMES", "DIVIDE",
   "NOT", "AND", "OR", "EQUALS", "NOTEQUALS", "LESS", "GREATER", "LESSEQ",
-  "GREATEREQ", "ASSIGN", "$accept", "program", "declList", "decl",
-  "varDeclList", "varDecl", "fnDecl", "structDecl", "structBody",
+  "GREATEREQ", "ASSIGN", "UMINUS", "$accept", "program", "declList",
+  "decl", "varDeclList", "varDecl", "fnDecl", "structDecl", "structBody",
   "formals", "formalsList", "formalDecl", "fnBody", "stmtList", "stmt",
   "exp", "assignExp", "term", "fncall", "actualList", "type", "loc", "id", YY_NULLPTR
   };
@@ -1420,13 +1420,13 @@ namespace LILC {
   const unsigned short int
   LilC_Parser::yyrline_[] =
   {
-       0,   169,   169,   176,   179,   184,   185,   186,   189,   192,
-     197,   202,   207,   212,   215,   220,   222,   227,   229,   235,
-     240,   245,   248,   253,   256,   259,   262,   265,   268,   271,
-     274,   277,   280,   283,   288,   291,   294,   297,   300,   303,
-     306,   309,   312,   315,   318,   321,   324,   327,   330,   335,
-     340,   342,   345,   348,   351,   354,   357,   362,   365,   371,
-     374,   382,   383,   384,   387,   389,   394
+       0,   178,   178,   185,   188,   193,   194,   195,   198,   201,
+     206,   208,   213,   218,   223,   226,   233,   235,   240,   244,
+     250,   255,   260,   263,   268,   270,   272,   274,   276,   278,
+     280,   282,   284,   286,   288,   293,   295,   297,   299,   301,
+     303,   305,   307,   309,   311,   313,   315,   317,   319,   321,
+     323,   328,   333,   335,   337,   339,   341,   343,   345,   350,
+     352,   357,   362,   370,   371,   372,   375,   377,   382
   };
 
   // Print the state stack on the debug stream.
@@ -1496,9 +1496,10 @@ namespace LILC {
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    36,    37,    38,    39,    40,    41,    42,    43,    44
+      35,    36,    37,    38,    39,    40,    41,    42,    43,    44,
+      45
     };
-    const unsigned int user_token_number_max_ = 299;
+    const unsigned int user_token_number_max_ = 300;
     const token_number_type undef_token_ = 2;
 
     if (static_cast<int>(t) <= yyeof_)
@@ -1511,8 +1512,8 @@ namespace LILC {
 
 #line 5 "lilc.yy" // lalr1.cc:1155
 } // LILC
-#line 1515 "lilc_parser.cc" // lalr1.cc:1155
-#line 395 "lilc.yy" // lalr1.cc:1156
+#line 1516 "lilc_parser.cc" // lalr1.cc:1155
+#line 383 "lilc.yy" // lalr1.cc:1156
 
 void
 LILC::LilC_Parser::error(const std::string &err_message )

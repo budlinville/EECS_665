@@ -6,4 +6,12 @@ struct abc {
     int n;
 };
 
-if (b == -1) { x = 4+3*5-y; while (c) { y = y*2+x; } } else { x = 0; }
+struct g {
+    int b;
+    int c;
+};
+
+
+int ssomeFunc() {
+    return 2;
+}
