@@ -169,14 +169,14 @@ namespace LILC {
     LILC::StructBodyNode * structBodyNode;
     LILC::FnDeclNode * fnDeclNode;
     LILC::FormalsNode * formalsNode;
-    LILC::FormalsListNode * formalsListNode;
+    std::list<FormalsNode *> * formalsListNode;
     LILC::FormalDeclNode * formalDeclNode;
     LILC::FnBodyNode * fnBodyNode;
     LILC::StmtNode * stmtNode;
-    LILC::StmtListNode * stmtListNode;
+    std::list<StmtNode *> * stmtListNode;
 
     LILC::ExpNode * expNode;
-    LILC::ExpListNode * expListNode;
+    std::list<ExpNode *> * expListNode;
     LILC::CallExpNode * callExpNode;
     LILC::UnaryExpNode * unaryExpNode;
     LILC::AssignNode * assignNode;

@@ -579,7 +579,7 @@ namespace LILC {
   case 9:
 #line 201 "lilc.yy" // lalr1.cc:847
     {
-	(yylhs.value.varDeclList) = new std::list<DeclNode *>();
+	(yylhs.value.varDeclList) = new std::list<VarDeclNode *>();
 }
 #line 585 "lilc_parser.cc" // lalr1.cc:847
     break;
@@ -603,7 +603,7 @@ namespace LILC {
   case 12:
 #line 213 "lilc.yy" // lalr1.cc:847
     {
-    (yylhs.value.fnDeclNode) = new FnDeclNode((yystack_[3].value.typeNode), (yystack_[2].value.idNode), new FormalsListNode((yystack_[1].value.formalsNode)), (yystack_[0].value.fnBodyNode));
+    (yylhs.value.fnDeclNode) = new FnDeclNode((yystack_[3].value.typeNode), (yystack_[2].value.idNode), (yystack_[1].value.formalsNode), (yystack_[0].value.fnBodyNode));
 }
 #line 609 "lilc_parser.cc" // lalr1.cc:847
     break;
@@ -611,7 +611,7 @@ namespace LILC {
   case 13:
 #line 218 "lilc.yy" // lalr1.cc:847
     {
-    (yylhs.value.structDeclNode) = new StructDeclNode((yystack_[4].value.idNode), new DeclListNode((yystack_[2].value.structBodyNode)));
+    (yylhs.value.structDeclNode) = new StructDeclNode((yystack_[4].value.idNode), (yystack_[2].value.structBodyNode));
 }
 #line 617 "lilc_parser.cc" // lalr1.cc:847
     break;
@@ -689,7 +689,7 @@ namespace LILC {
   case 22:
 #line 260 "lilc.yy" // lalr1.cc:847
     {
-    1->push_back((yystack_[0].value.stmtNode));
+    (yystack_[1].value.stmtListNode)->push_back((yystack_[0].value.stmtNode));
     (yylhs.value.stmtListNode) = (yystack_[1].value.stmtListNode);
 }
 #line 696 "lilc_parser.cc" // lalr1.cc:847
@@ -906,7 +906,7 @@ namespace LILC {
   case 49:
 #line 321 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.expNode) = new UnaryMinusNode((yystack_[0].value.unaryExpNode));
+  (yylhs.value.expNode) = new UnaryMinusNode((yystack_[0].value.ExpNode));
 }
 #line 912 "lilc_parser.cc" // lalr1.cc:847
     break;
@@ -914,7 +914,7 @@ namespace LILC {
   case 50:
 #line 323 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.expNode) = (yystack_[0].value.unaryExpNode);
+  (yylhs.value.expNode) = (yystack_[0].value.ExpNode);
 }
 #line 920 "lilc_parser.cc" // lalr1.cc:847
     break;
@@ -930,7 +930,7 @@ namespace LILC {
   case 52:
 #line 333 "lilc.yy" // lalr1.cc:847
     {
-    (yylhs.value.unaryExpNode) = (yystack_[0].value.expNode);
+    (yylhs.value.ExpNode) = (yystack_[0].value.expNode);
 }
 #line 936 "lilc_parser.cc" // lalr1.cc:847
     break;
@@ -938,7 +938,7 @@ namespace LILC {
   case 53:
 #line 335 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.unaryExpNode) = new IntLitNode((yystack_[0].value.intTokenValue));
+  (yylhs.value.ExpNode) = new IntLitNode((yystack_[0].value.intTokenValue));
 }
 #line 944 "lilc_parser.cc" // lalr1.cc:847
     break;
@@ -946,7 +946,7 @@ namespace LILC {
   case 54:
 #line 337 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.unaryExpNode) = new StrLitNode((yystack_[0].value.strTokenValue));
+  (yylhs.value.ExpNode) = new StrLitNode((yystack_[0].value.strTokenValue));
 }
 #line 952 "lilc_parser.cc" // lalr1.cc:847
     break;
@@ -954,7 +954,7 @@ namespace LILC {
   case 55:
 #line 339 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.unaryExpNode) = new TrueNode();
+  (yylhs.value.ExpNode) = new TrueNode();
 }
 #line 960 "lilc_parser.cc" // lalr1.cc:847
     break;
@@ -962,7 +962,7 @@ namespace LILC {
   case 56:
 #line 341 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.unaryExpNode) = new FalseNode();
+  (yylhs.value.ExpNode) = new FalseNode();
 }
 #line 968 "lilc_parser.cc" // lalr1.cc:847
     break;
@@ -970,7 +970,7 @@ namespace LILC {
   case 57:
 #line 343 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.unaryExpNode) = (yystack_[1].value.expNode);
+  (yylhs.value.ExpNode) = (yystack_[1].value.expNode);
 }
 #line 976 "lilc_parser.cc" // lalr1.cc:847
     break;
@@ -978,7 +978,7 @@ namespace LILC {
   case 58:
 #line 345 "lilc.yy" // lalr1.cc:847
     {
-  (yylhs.value.unaryExpNode) = (yystack_[0].value.callExpNode);
+  (yylhs.value.ExpNode) = (yystack_[0].value.callExpNode);
 }
 #line 984 "lilc_parser.cc" // lalr1.cc:847
     break;

@@ -66,14 +66,14 @@
     LILC::StructBodyNode * structBodyNode;
     LILC::FnDeclNode * fnDeclNode;
     LILC::FormalsNode * formalsNode;
-    LILC::FormalsListNode * formalsListNode;
+    std::list<FormalsNode *> * formalsListNode;
     LILC::FormalDeclNode * formalDeclNode;
     LILC::FnBodyNode * fnBodyNode;
     LILC::StmtNode * stmtNode;
-    LILC::StmtListNode * stmtListNode;
+    std::list<StmtNode *> * stmtListNode;
 
     LILC::ExpNode * expNode;
-    LILC::ExpListNode * expListNode;
+    std::list<ExpNode *> * expListNode;
     LILC::CallExpNode * callExpNode;
     LILC::UnaryExpNode * unaryExpNode;
     LILC::AssignNode * assignNode;
@@ -157,7 +157,7 @@
 %type <expListNode> actualList
 %type <callExpNode> fncall
 %type <expNode> loc
-%type <unaryExpNode> term
+%type <ExpNode> term
 %type <assignNode> assignExp
 
 
@@ -199,7 +199,7 @@ varDeclList : varDeclList varDecl {
     $1->push_back($2);
 	$$ = $1;
 } | /* epsilon */ {
-	$$ = new std::list<DeclNode *>();
+	$$ = new std::list<VarDeclNode *>();
 };
 
 
@@ -211,12 +211,12 @@ varDecl : type id SEMICOLON {
 
 
 fnDecl: type id formals fnBody {
-    $$ = new FnDeclNode($1, $2, new FormalsListNode($3), $4);
+    $$ = new FnDeclNode($1, $2, $3, $4);
 };
 
 
 structDecl : STRUCT id LCURLY structBody RCURLY SEMICOLON {
-    $$ = new StructDeclNode($2, new DeclListNode($4));
+    $$ = new StructDeclNode($2, $4);
 };
 
 
@@ -258,7 +258,7 @@ fnBody : LCURLY varDeclList stmtList RCURLY {
 
 
 stmtList : stmtList stmt {
-    1->push_back($2);
+    $1->push_back($2);
     $$ = $1;
 } | /* epsilon */ {
   $$ = new std::list<StmtNode *>();
