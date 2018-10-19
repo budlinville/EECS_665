@@ -1,2 +1,7 @@
 int x;
 int y;
+
+struct abc {
+    int m;
+    int n;
+};

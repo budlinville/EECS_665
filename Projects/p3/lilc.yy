@@ -50,6 +50,8 @@
 	*/
     LILC::SynSymbol * symbolValue;
 	LILC::IDToken * idTokenValue;
+    LILC::StrLitNode * strLitValue;
+    LILC::IntLitNode * intLitValue;
 	LILC::ASTNode * astNode;
 	LILC::ProgramNode * programNode;
 	std::list<DeclNode *> * declList;
@@ -57,6 +59,24 @@
 	LILC::VarDeclNode * varDeclNode;
 	LILC::TypeNode * typeNode;
 	LILC::IdNode * idNode;
+  LILC::StructDeclNode * structDeclNode;
+  LILC::StructBodyNode * structBodyNode;
+  LILC::FnDeclNode * fnDeclNode;
+  LILC::FormalsNode * formalsNode;
+  LILC::FormalsListNode * formalsListNode;
+  LILC::FormalDeclNode * formalDeclNode;
+  LILC::FnBodyNode * fnBodyNode;
+  LILC::StmtNode * stmtNode;
+  LILC::StmtListNode * stmtListNode;
+
+  LILC::ExpNode * expNode;
+  LILC::ExpListNode * expListNode;
+  LILC::CallExpNode * callExpNode;
+  LILC::UnaryExpNode * unaryExpNode;
+  LILC::AssignNode * assignNode;
+
+  LILC::DotAccessNode * dotAccessNode;
+
 	/*LILC::Token * token;*/
 }
 
@@ -78,8 +98,8 @@
 %token               WHILE
 %token               RETURN
 %token <idTokenValue> ID
-%token               INTLITERAL
-%token               STRINGLITERAL
+%token <intLitValue> INTLITERAL
+%token <strLitValue> STRINGLITERAL
 %token               LCURLY
 %token               RCURLY
 %token               LPAREN
@@ -117,12 +137,31 @@
 %type <varDeclNode> varDecl
 %type <typeNode> type
 %type <idNode> id
+%type <structDeclNode> structDecl
+%type <structBodyNode> structBody
+%type <fnDeclNode> fnDecl
+%type <formalsNode> formals
+%type <formalsListNode> formalsList
+%type <formalDeclNode> formalDecl
+%type <fnBodyNode> fnBody
+%type <stmtNode> stmt
+%type <stmtListNode> stmtList
+
+%type <expNode> exp
+%type <expListNode> actualList
+%type <callExpNode> fncall
+%type <dotAccessNode> loc
+%type <unaryExpNode> term
+%type <assignNode> assignExp
+
+
+
+
 
 
 /* NOTE: Make sure to add precedence and associativity
  * declarations
 */
-
 %%
 
 program : declList {
@@ -138,28 +177,199 @@ declList : declList decl {
 	$$ = new std::list<DeclNode *>();
 };
 
-decl : varDecl {
-    //Make sure to fill out this rule
-}
+decl : varDecl { $$ = $1; }
+  | structDecl { $$ = $1; }
+  | fnDecl { $$ = $1; }
+
+
 
 varDecl : type id SEMICOLON {
     $$ = new VarDeclNode($1, $2, VarDeclNode::NOT_STRUCT);
 }
 
+fnDecl: type id formals fnBody {
+    $$ = new FnDeclNode($1, $2, $3, $4);
+}
+
 structDecl : STRUCT id LCURLY structBody RCURLY SEMICOLON {
-    $$ = new StructDeclNode($1, $2, 0);
+    $$ = new StructDeclNode($2, $4);
 }
 
 structBody : structBody varDecl {
-    $1->push_back($2);
-	$$ = $1;
+    $1->myVarDecls.push_back($2);
+    $$ = $1;
 } | varDecl {
-    $$ = new std::list<VarDeclNode *>();
+    $$ = new StructBodyNode(new std::list<VarDeclNode *>());
 };
+
+formals : LPAREN RPAREN {
+  $$ = new FormalsNode(new FormalsListNode(new std::list<FormalDeclNode *>()));
+} | LPAREN formalsList RPAREN {
+  $$ = new FormalsNode($2);
+}
+
+formalsList : formalDecl {
+  $$ = new FormalsListNode(new std::list<FormalDeclNode *>());
+} | formalDecl COMMA formalsList {
+  $3->myFormalDecls->push_back($1);
+  $$ = $3;
+}
+
+formalDecl : type id {
+  $$ = new FormalDeclNode($1, $2);
+}
+
+fnBody : LCURLY declList stmtList RCURLY {
+  $$ = new FnBodyNode(new DeclListNode($2), $3);
+}
+
+stmtList : stmtList stmt {
+  $1->myStmtNodes->push_back($2);
+  $$ = $1;
+} | /* epsilon */ {
+  $$ = new StmtListNode(new std::list<StmtNode *>());
+}
+
+
+stmt : assignExp SEMICOLON {
+  $$ = new AssignStmtNode($1);
+
+} | loc PLUSPLUS SEMICOLON {
+  $$ = new PostIncStmtNode($1);
+
+} | loc MINUSMINUS SEMICOLON {
+  $$ = new PostDecStmtNode($1);
+
+} | INPUT READ loc SEMICOLON {
+  $$ = new ReadStmtNode($3);
+
+} | OUTPUT WRITE exp SEMICOLON {
+  $$ = new WriteStmtNode($3);
+
+} | IF LPAREN exp RPAREN LCURLY declList stmtList RCURLY {
+  $$ = new IfStmtNode($3, new DeclListNode($6), $7);
+
+} | IF LPAREN exp RPAREN LCURLY declList stmtList RCURLY ELSE LCURLY declList stmtList RCURLY {
+  $$ = new IfElseStmtNode($3, new DeclListNode($6), $7, new DeclListNode($11), $12);
+
+} | WHILE LPAREN exp RPAREN LCURLY declList stmtList RCURLY {
+  $$ = new WhileStmtNode($3, new DeclListNode($6), $7);
+
+} | RETURN exp SEMICOLON {
+  $$ = new ReturnStmtNode($2);
+
+} | RETURN SEMICOLON {
+  $$ = new ReturnStmtNode(new ExpNode());
+
+} | fncall SEMICOLON {
+  $$ = new CallStmtNode($1);
+}
+
+
+
+
+exp : exp PLUS exp {
+  $$ = new PlusNode($1, $3);
+
+} | exp MINUS exp {
+  $$ = new MinusNode($1, $3);
+
+} | exp TIMES exp {
+  $$ = new TimesNode($1, $3);
+
+} | exp DIVIDE exp {
+  $$ = new DivideNode($1, $3);
+
+} | NOT exp {
+  $$ = new NotNode($2);
+
+} | exp AND exp {
+  $$ = new AndNode($1, $3);
+
+} | exp OR exp {
+  $$ = new OrNode($1, $3);
+
+} | exp EQUALS exp {
+  $$ = new EqualsNode($1, $3);
+
+} | exp NOTEQUALS exp {
+  $$ = new NotEqualsNode($1, $3);
+
+} | exp LESS exp {
+  $$ = new LessNode($1, $3);
+
+} | exp GREATER exp {
+  $$ = new GreaterNode($1, $3);
+
+} | exp LESSEQ exp {
+  $$ = new LessEqNode($1, $3);
+
+} | exp GREATEREQ exp {
+  $$ = new GreaterEqNode($1, $3);
+
+} | MINUS term {
+  $$ = new UnaryMinusNode($2);
+
+} | term {
+  $$ = new UnaryExpNode($1);
+}
+
+assignExp : loc ASSIGN exp {
+  $$ = new AssignNode($1, $3);
+}
+
+
+term : loc {
+    //TODO: implement this?
+} | INTLITERAL {
+  $$ = new UnaryExpNode(new IntLitNode($1));
+
+} | STRINGLITERAL {
+  $$ = new UnaryExpNode(new StrLitNode($1));
+
+} | TRUE {
+  $$ = new UnaryExpNode(new TrueNode());
+
+} | FALSE {
+  $$ = new UnaryExpNode(new FalseNode());
+
+} | LPAREN exp RPAREN {
+  $$ = new UnaryExpNode($2);
+
+} | fncall {
+  $$ = new UnaryExpNode($1);
+}
+
+
+fncall : id LPAREN RPAREN {
+  $$ = new CallExpNode($1, new ExpListNode(new std::list<ExpNode *>()));
+
+} | id LPAREN actualList RPAREN {
+  $$ = new CallExpNode($1, $3);
+
+}
+
+
+actualList : exp {
+  $$ = new ExpListNode(new std::list<ExpNode *>());
+
+} | actualList COMMA exp {
+  $1->myExpNodes->push_back($3);
+  $$ = $1;
+
+}
+
+
 
 type : INT { $$ = new IntNode(); }
 type : BOOL { $$ = new BoolNode(); }
 type : VOID {}
+
+loc : id {
+  $$ = new DotAccessNode(new ExpNode() , $1);
+} | loc DOT id {
+  $$ = new DotAccessNode($1, $3);
+}
 
 id : ID { $$ = new IdNode($1); }
 %%
