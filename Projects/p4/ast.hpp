@@ -27,9 +27,6 @@ public:
 	void doIndent(std::ostream& out, int indent){
 		for (int k = 0 ; k < indent; k++){ out << " "; }
 	}
-
-protected:
-	void reportError(int lineNum, int charNum, error_type err);
 };
 
 class ProgramNode : public ASTNode{
