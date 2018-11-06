@@ -3,5 +3,7 @@
 #include "ast.hpp"
 
 namespace LILC{
-
+    std::string StructNode::toString() {
+        return myId->myStrVal; 
+    }
 }   //end namespace LILC

@@ -36,7 +36,8 @@ public:
 	}
 	bool nameAnalysis(SymbolTable * symTab);
 	void unparse(std::ostream& out, int indent);
-private:
+
+//private:
 	DeclListNode * myDeclList;
 };
 
@@ -47,7 +48,7 @@ public:
 	}
 	bool nameAnalysis(SymbolTable * symTab);
 	void unparse(std::ostream& out, int indent);
-private:
+//private:
 	std::list<DeclNode *> * myDecls;
 };
 
@@ -68,7 +69,7 @@ public:
 	void unparse(std::ostream& out, int indent);
 	static const int NOT_STRUCT = -1; //Use this value for mySize
 					  // if this is not a struct type
-private:
+//private:
 	TypeNode * myType;
 	IdNode * myId;
 	int mySize;
@@ -93,7 +94,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	std::list<FormalDeclNode *> * myFormals;
 };
 
@@ -104,7 +105,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	std::list<ExpNode *> myExps;
 };
 
@@ -115,7 +116,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	std::list<StmtNode *> * myStmts;
 };
 
@@ -127,7 +128,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	DeclListNode * myDeclList;
 	StmtListNode * myStmtList;
 };
@@ -143,7 +144,7 @@ public:
 	}
 	bool nameAnalysis(SymbolTable * symTab);
 	void unparse(std::ostream& out, int indent);
-private:
+//private:
 	TypeNode * myType;
 	IdNode * myId;
 	FormalsListNode * myFormals;
@@ -159,7 +160,7 @@ public:
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
 
-private:
+//private:
 	TypeNode * myType;
 	IdNode * myId;
 };
@@ -174,7 +175,7 @@ public:
 	bool nameAnalysis(SymbolTable * symTab);
 	static const int NOT_STRUCT = -1; //Use this value for mySize
 					  // if this is not a struct type
-private:
+//private:
 	IdNode * myId;
 	DeclListNode * myDeclList;
 };
@@ -183,7 +184,8 @@ private:
 class TypeNode : public ASTNode{
 public:
 	virtual void unparse(std::ostream& out, int indent) = 0;
-	virtual bool nameAnalysis(SymbolTable * symTab);
+	//virtual bool nameAnalysis(SymbolTable * symTab);
+	virtual std::string toString() = 0;
 };
 
 class IntNode : public TypeNode{
@@ -191,6 +193,7 @@ public:
 	IntNode(): TypeNode(){ }
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
+	std::string toString() { return "int"; }
 };
 
 class BoolNode : public TypeNode{
@@ -198,6 +201,7 @@ public:
 	BoolNode(): TypeNode(){ }
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
+	std::string toString() { return "bool"; }
 };
 
 class VoidNode : public TypeNode{
@@ -205,6 +209,7 @@ public:
 	VoidNode(): TypeNode(){ }
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
+	std::string toString() { return "void"; }
 };
 
 class StructNode : public TypeNode{
@@ -214,7 +219,8 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+	std::string toString();
+//private:
 	IdNode * myId;
 };
 
@@ -225,7 +231,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	int myInt;
 };
 
@@ -236,7 +242,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	 std::string myString;
 };
 
@@ -247,7 +253,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	std::string myStrVal;
 };
 
@@ -256,7 +262,7 @@ public:
 	TrueNode(): ExpNode(){ }
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 };
 
 class FalseNode : public ExpNode{
@@ -274,7 +280,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	ExpNode * myExp;
 	IdNode * myId;
 };
@@ -287,7 +293,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	ExpNode * myExpLHS;
 	ExpNode * myExpRHS;
 };
@@ -300,7 +306,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	IdNode * myId;
 	ExpListNode * myExpList;
 };
@@ -318,7 +324,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	ExpNode * myExp;
 };
 
@@ -329,7 +335,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	ExpNode * myExp;
 };
 
@@ -347,7 +353,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	ExpNode * myExp1;
 	ExpNode * myExp2;
 };
@@ -360,7 +366,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	ExpNode * myExp1;
 	ExpNode * myExp2;
 };
@@ -373,7 +379,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	ExpNode * myExp1;
 	ExpNode * myExp2;
 };
@@ -386,7 +392,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	ExpNode * myExp1;
 	ExpNode * myExp2;
 };
@@ -399,7 +405,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	ExpNode * myExp1;
 	ExpNode * myExp2;
 };
@@ -412,7 +418,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	ExpNode * myExp1;
 	ExpNode * myExp2;
 };
@@ -425,7 +431,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	ExpNode * myExp1;
 	ExpNode * myExp2;
 };
@@ -438,7 +444,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	ExpNode * myExp1;
 	ExpNode * myExp2;
 };
@@ -451,7 +457,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	ExpNode * myExp1;
 	ExpNode * myExp2;
 };
@@ -464,7 +470,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	ExpNode * myExp1;
 	ExpNode * myExp2;
 };
@@ -477,7 +483,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	ExpNode * myExp1;
 	ExpNode * myExp2;
 };
@@ -490,7 +496,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	ExpNode * myExp1;
 	ExpNode * myExp2;
 };
@@ -502,7 +508,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	AssignNode * myAssign;
 };
 
@@ -513,7 +519,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	ExpNode * myExp;
 };
 
@@ -524,7 +530,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	ExpNode * myExp;
 };
 
@@ -535,7 +541,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	ExpNode * myExp;
 };
 
@@ -546,7 +552,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	ExpNode * myExp;
 };
 
@@ -561,7 +567,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	ExpNode * myExp;
 	DeclListNode * myDecls;
 	StmtListNode * myStmts;
@@ -581,7 +587,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	ExpNode * myExp;
 	DeclListNode * myDeclsT;
 	StmtListNode * myStmtsT;
@@ -599,7 +605,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	ExpNode * myExp;
 	DeclListNode * myDecls;
 	StmtListNode * myStmts;
@@ -612,7 +618,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	CallExpNode * myCallExp;
 };
 
@@ -623,7 +629,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
-private:
+//private:
 	ExpNode * myExp;
 };
 
