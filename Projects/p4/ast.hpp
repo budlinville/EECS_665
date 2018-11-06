@@ -84,7 +84,7 @@ public:
 class StmtNode : public ASTNode{
 public:
 	virtual void unparse(std::ostream& out, int indent) = 0;
-	virtual bool nameAnalysis(SymbolTable * symTab);
+	virtual bool nameAnalysis(SymbolTable * symTab) = 0;
 };
 
 class FormalsListNode : public ASTNode{

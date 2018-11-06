@@ -80,7 +80,7 @@ bool FnDeclNode::nameAnalysis(SymbolTable * symTab){
 	}
 
 
-	return true;
+	return myBody->nameAnalysis(symTab);
 }
 
 bool FormalsListNode::nameAnalysis(SymbolTable * symTab){
@@ -96,26 +96,86 @@ bool FormalsListNode::nameAnalysis(SymbolTable * symTab){
 }
 
 bool FnBodyNode::nameAnalysis(SymbolTable * symTab){
-
+	bool ret = myDeclList->nameAnalysis(symTab)
+		|| myStmtList->nameAnalysis(symTab);
+	symTab->leaveCurrentScope();
+	return ret;
 }
 
 bool ExpListNode::nameAnalysis(SymbolTable * symTab){
+	bool ret = true;
 
+	for (std::list<ExpNode *>::iterator it=myExps->begin(); it != myExps->end(); ++it){
+	  	ExpNode * elt = *it;
+	  	result = elt->nameAnalysis(symTab) && ret;
+	}
+
+	return ret;
 }
 
 bool StmtListNode::nameAnalysis(SymbolTable * symTab){
+	bool ret = true;
 
-}
+	for (std::list<StmtNode *>::iterator it=myStmts->begin(); it != myStmts->end(); ++it){
+	  	StmtNode * elt = *it;
+	  	result = elt->nameAnalysis(symTab) && ret;
+	}
 
-bool StmtNode::nameAnalysis(SymbolTable * symTab){
-
+	return ret;
 }
 
 bool FormalDeclNode::nameAnalysis(SymbolTable * symTab){
+	std::string type = myType->toString();
+	std::string id = myId->myStrVal;
+	bool ret = true;
 
+	if (symTab->getEntry(id) != nullptr) {
+		//TODO stderr("Multiply declared identifier", id);
+		ret = false;
+	}
+
+	if (type == "void") {
+		//TODO stderr("Non-function declared void", id);
+		ret = false;
+	}
+
+	if (ret) {
+		VarSymbolEntry * entry = new VarSymbolEntry(type, id, -1);
+		symTab->addEntry(entry);
+	}
+
+	return ret;
 }
 
 bool StructDeclNode::nameAnalysis(SymbolTable * symTab){
+	std::string id = myId->myStrVal;
+	std::list<VarSymbolEntry*>* items = new std::list<VarSymbolEntry*>();
+	bool ret = true;
+
+	for (std::list<DeclNode*>::iterator it=myDeclList->GetDecls()->begin(); it != myDeclList->GetDecls()->end(); ++it){
+		DeclNode * elt = *it;
+		std::string itemType = elt->GetType()->toString();
+		std::string itemId = elt->GetId()->myStrVal;
+
+		if(type == "void") {
+			//TODO: error("Invalid name of struct type", id);
+			return false;
+		}
+
+		items->push_back(new VarDefSymbol(itemType, ItemId, -1));
+	}
+
+	StructSymbolEntry * entry = new StructSymbolEntry(id, items);
+
+	if (symTab->getEntry(id) == nullptr) {
+		symTab->addEntry(entry);
+	} else {
+		//TODO: error("Multiply declared identifier", id);
+		ret = false;
+	}
+
+	return ret;
+
 
 }
 
