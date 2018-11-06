@@ -4,6 +4,7 @@
 #include <ostream>
 #include <list>
 #include "tokens.hpp"
+#include "symbol_table.hpp"
 
 namespace LILC{
 
@@ -54,8 +55,19 @@ public:
 
 class DeclNode : public ASTNode{
 public:
+
 	virtual void unparse(std::ostream& out, int indent) = 0;
 	virtual bool nameAnalysis(SymbolTable * symTab);
+	virtual TypeNode * getType() {
+		return nullptr;
+	}
+	virtual IdNode * getId() {
+		return nullptr;
+	}
+	virtual int getSize() {
+		return -1;
+	}
+
 };
 
 class VarDeclNode : public DeclNode{
@@ -84,7 +96,7 @@ public:
 class StmtNode : public ASTNode{
 public:
 	virtual void unparse(std::ostream& out, int indent) = 0;
-	virtual bool nameAnalysis(SymbolTable * symTab) = 0;
+	virtual bool nameAnalysis(SymbolTable * symTab);
 };
 
 class FormalsListNode : public ASTNode{
@@ -101,12 +113,12 @@ public:
 class ExpListNode : public ASTNode{
 public:
 	ExpListNode(std::list<ExpNode *> * exps) : ASTNode(){
-		myExps = *exps;
+		myExps = exps;
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
 //private:
-	std::list<ExpNode *> myExps;
+	std::list<ExpNode *> * myExps;
 };
 
 class StmtListNode : public ASTNode{
@@ -250,11 +262,13 @@ class IdNode : public ExpNode{
 public:
 	IdNode(IDToken * token) : ExpNode(){
 		myStrVal = token->value();
+		myEntry = nullptr;
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
 //private:
 	std::string myStrVal;
+	SymbolTableEntry * myEntry;
 };
 
 class TrueNode : public ExpNode{
@@ -280,6 +294,7 @@ public:
 	}
 	void unparse(std::ostream& out, int indent);
 	bool nameAnalysis(SymbolTable * symTab);
+
 //private:
 	ExpNode * myExp;
 	IdNode * myId;

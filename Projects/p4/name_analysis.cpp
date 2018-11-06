@@ -58,13 +58,13 @@ bool VarDeclNode::nameAnalysis(SymbolTable * symTab){
 bool FnDeclNode::nameAnalysis(SymbolTable * symTab){
 	std::string type = myType->toString();
 	std::string id = myId->myStrVal;
-	std::list<VarSymbolEntry*>* pars = new std::list<VarDefSymbol*>();
+	std::list<VarSymbolEntry*>* pars = new std::list<VarSymbolEntry*>();
 
-	for (std::list<FormalDeclNode *>::iterator it=myFormals->GetFormals()->begin(); it != myFormals->GetFormals()->end(); ++it){
+	for (std::list<FormalDeclNode *>::iterator it=myFormals->myFormals->begin(); it != myFormals->myFormals->end(); ++it){
 	    FormalDeclNode * elt = *it;
-		std::string type = elt->GetType()->toString();
-		std::string id = elt->GetId()->myStrVal;
-		VarSymbolEntry* var = new VarDefSymbol(type, id, VarSymbolEntry::NOT_STRUCT);
+		std::string type = elt->myType->toString();
+		std::string id = elt->myId->myStrVal;
+		VarSymbolEntry* var = new VarSymbolEntry(type, id, -1);
 		pars->push_back(var);
 	}
 
@@ -103,14 +103,14 @@ bool FnBodyNode::nameAnalysis(SymbolTable * symTab){
 }
 
 bool ExpListNode::nameAnalysis(SymbolTable * symTab){
-	bool ret = true;
+	bool result = true;
 
 	for (std::list<ExpNode *>::iterator it=myExps->begin(); it != myExps->end(); ++it){
 	  	ExpNode * elt = *it;
-	  	result = elt->nameAnalysis(symTab) && ret;
+	  	result = elt->nameAnalysis(symTab) && result;
 	}
 
-	return ret;
+	return result;
 }
 
 bool StmtListNode::nameAnalysis(SymbolTable * symTab){
@@ -118,7 +118,7 @@ bool StmtListNode::nameAnalysis(SymbolTable * symTab){
 
 	for (std::list<StmtNode *>::iterator it=myStmts->begin(); it != myStmts->end(); ++it){
 	  	StmtNode * elt = *it;
-	  	result = elt->nameAnalysis(symTab) && ret;
+	  	ret = elt->nameAnalysis(symTab) && ret;
 	}
 
 	return ret;
@@ -152,17 +152,17 @@ bool StructDeclNode::nameAnalysis(SymbolTable * symTab){
 	std::list<VarSymbolEntry*>* items = new std::list<VarSymbolEntry*>();
 	bool ret = true;
 
-	for (std::list<DeclNode*>::iterator it=myDeclList->GetDecls()->begin(); it != myDeclList->GetDecls()->end(); ++it){
+	for (std::list<DeclNode*>::iterator it=myDeclList->myDecls->begin(); it != myDeclList->myDecls->end(); ++it){
 		DeclNode * elt = *it;
-		std::string itemType = elt->GetType()->toString();
-		std::string itemId = elt->GetId()->myStrVal;
+		std::string itemType = elt->getType()->toString();
+		std::string itemId = elt->getId()->myStrVal;
 
-		if(type == "void") {
+		if(itemType == "void") {
 			//TODO: error("Invalid name of struct type", id);
 			return false;
 		}
 
-		items->push_back(new VarDefSymbol(itemType, ItemId, -1));
+		items->push_back(new VarSymbolEntry(itemType, itemId, -1));
 	}
 
 	StructSymbolEntry * entry = new StructSymbolEntry(id, items);
@@ -180,49 +180,74 @@ bool StructDeclNode::nameAnalysis(SymbolTable * symTab){
 }
 
 bool AssignStmtNode::nameAnalysis(SymbolTable * symTab){
-
+	return myAssign->nameAnalysis(symTab);
 }
 
 bool PostIncStmtNode::nameAnalysis(SymbolTable * symTab){
-
+	return myExp->nameAnalysis(symTab);
 }
 
 bool PostDecStmtNode::nameAnalysis(SymbolTable * symTab){
-
+	return myExp->nameAnalysis(symTab);
 }
 
 bool ReadStmtNode::nameAnalysis(SymbolTable * symTab){
-
+	return myExp->nameAnalysis(symTab);
 }
 
 bool WriteStmtNode::nameAnalysis(SymbolTable * symTab){
-
+	return myExp->nameAnalysis(symTab);
 }
 
 bool IfStmtNode::nameAnalysis(SymbolTable * symTab){
-
+	symTab->enterNewScope();
+	bool result = myExp->nameAnalysis(symTab);
+	result = result && myDecls->nameAnalysis(symTab);
+	result = result && myStmts->nameAnalysis(symTab);
+	symTab->leaveCurrentScope();
+	return result;
 }
 
 bool IfElseStmtNode::nameAnalysis(SymbolTable * symTab){
-
+	symTab->enterNewScope();
+	bool result = myExp->nameAnalysis(symTab);
+	result = result && myDeclsT->nameAnalysis(symTab);
+	result = result && myStmtsT->nameAnalysis(symTab);
+	symTab->leaveCurrentScope();
+	symTab->enterNewScope();
+	result = result && myDeclsF->nameAnalysis(symTab);
+	result = result && myStmtsF->nameAnalysis(symTab);
+	symTab->leaveCurrentScope();
+	return result;
 }
 
 bool WhileStmtNode::nameAnalysis(SymbolTable * symTab){
-
+	symTab->enterNewScope();
+	bool result = myExp->nameAnalysis(symTab);
+	result = result && myDecls->nameAnalysis(symTab);
+	result = result && myStmts->nameAnalysis(symTab);
+	symTab->leaveCurrentScope();
+	return result;
 }
 
 bool CallStmtNode::nameAnalysis(SymbolTable * symTab){
-
+	return myCallExp->nameAnalysis(symTab);
 }
 
 bool ReturnStmtNode::nameAnalysis(SymbolTable * symTab){
-
+	return myExp->nameAnalysis(symTab);
 }
 
 bool IdNode::nameAnalysis(SymbolTable * symTab){
-
+	myEntry = symTab->getEntry(myStrVal);
+	if (myEntry == nullptr) {
+		error("Undeclared identifier", myStrVal);
+		return false;
+	}
+	return true;
 }
 
+/*
 bool IntNode::nameAnalysis(SymbolTable * symTab){
 
 }
@@ -238,88 +263,139 @@ bool VoidNode::nameAnalysis(SymbolTable * symTab){
 bool StructNode::nameAnalysis(SymbolTable * symTab){
 
 }
+*/
 
 bool IntLitNode::nameAnalysis(SymbolTable * symTab){
-
+	return true;
 }
 
 bool StrLitNode::nameAnalysis(SymbolTable * symTab){
-
+	return true;
 }
 
 bool TrueNode::nameAnalysis(SymbolTable * symTab){
-
+	return true;
 }
 
 bool FalseNode::nameAnalysis(SymbolTable * symTab){
-
+	return true;
 }
 
 bool DotAccessNode::nameAnalysis(SymbolTable * symTab){
+	bool result = myExp->nameAnalysis(symTab);
+	IdNode * n = dynamic_cast<IdNode *>(myExp);
+	if (n == nullptr) {
+		error("Dot-access of non-struct type", n->myStrVal);
+		return false;
+	}
 
+	StructSymbolEntry * entry = dynamic_cast<StructSymbolEntry *>(symTab->getEntry(n->myEntry->getType()));
+
+	if (entry == nullptr) {
+		error("Dot-access of non-struct type", n->myStrVal);
+		return false;
+	}
+
+	VarSymbolEntry * varEntry = entry->find(myId->myStrVal);
+	if (varEntry) {
+		myId->myEntry = varEntry;
+		return true;
+	}
+	error("Invalid struct field name", myId->myStrVal);
+	return false;
 }
 
 bool AssignNode::nameAnalysis(SymbolTable * symTab){
-
+	bool result = myExpLHS->nameAnalysis(symTab);
+	result = result && myExpRHS->nameAnalysis(symTab);
+	return result;
 }
 
 bool CallExpNode::nameAnalysis(SymbolTable * symTab){
-
+	bool result = myId->nameAnalysis(symTab);
+	result = result && myExpList->nameAnalysis(symTab);
+	return result;
 }
 
 bool UnaryMinusNode::nameAnalysis(SymbolTable * symTab){
-
+	return myExp->nameAnalysis(symTab);
 }
 
 bool NotNode::nameAnalysis(SymbolTable * symTab){
-
+	return myExp->nameAnalysis(symTab);
 }
 
 bool PlusNode::nameAnalysis(SymbolTable * symTab){
-
+	bool result = myExp1->nameAnalysis(symTab);
+	result = result && myExp2->nameAnalysis(symTab);
+	return result;
 }
 
 bool MinusNode::nameAnalysis(SymbolTable * symTab){
-
+	bool result = myExp1->nameAnalysis(symTab);
+	result = result && myExp2->nameAnalysis(symTab);
+	return result;
 }
 
 bool TimesNode::nameAnalysis(SymbolTable * symTab){
-
+	bool result = myExp1->nameAnalysis(symTab);
+	result = result && myExp2->nameAnalysis(symTab);
+	return result;
 }
 
 bool DivideNode::nameAnalysis(SymbolTable * symTab){
-
+	bool result = myExp1->nameAnalysis(symTab);
+	result = result && myExp2->nameAnalysis(symTab);
+	return result;
 }
 
 bool AndNode::nameAnalysis(SymbolTable * symTab){
-
+	bool result = myExp1->nameAnalysis(symTab);
+	result = result && myExp2->nameAnalysis(symTab);
+	return result;
 }
 
 bool OrNode::nameAnalysis(SymbolTable * symTab){
-
+	bool result = myExp1->nameAnalysis(symTab);
+	result = result && myExp2->nameAnalysis(symTab);
+	return result;
 }
 
 bool EqualsNode::nameAnalysis(SymbolTable * symTab){
-
+	bool result = myExp1->nameAnalysis(symTab);
+	result = result && myExp2->nameAnalysis(symTab);
+	return result;
 }
 
 bool NotEqualsNode::nameAnalysis(SymbolTable * symTab){
-
+	bool result = myExp1->nameAnalysis(symTab);
+	result = result && myExp2->nameAnalysis(symTab);
+	return result;
 }
 
 bool LessNode::nameAnalysis(SymbolTable * symTab){
-
+	bool result = myExp1->nameAnalysis(symTab);
+	result = result && myExp2->nameAnalysis(symTab);
+	return result;
 }
 
 bool GreaterNode::nameAnalysis(SymbolTable * symTab){
-
+	bool result = myExp1->nameAnalysis(symTab);
+	result = result && myExp2->nameAnalysis(symTab);
+	return result;
 }
 
 bool LessEqNode::nameAnalysis(SymbolTable * symTab){
+	bool result = myExp1->nameAnalysis(symTab);
+	result = result && myExp2->nameAnalysis(symTab);
+	return result;
 
 }
 
 bool GreaterEqNode::nameAnalysis(SymbolTable * symTab){
+	bool result = myExp1->nameAnalysis(symTab);
+	result = result && myExp2->nameAnalysis(symTab);
+	return result;
 
 }
 

@@ -37,11 +37,11 @@ void FnBodyNode::unparse(std::ostream& out, int indent){
 }
 
 void ExpListNode::unparse(std::ostream& out, int indent){
-	for (std::list<ExpNode *>::iterator it=myExps.begin();
-		it != myExps.end(); ++it){
+	for (std::list<ExpNode *>::iterator it=myExps->begin();
+		it != myExps->end(); ++it){
 	    ExpNode * elt = *it;
 	    elt->unparse(out, indent);
-		if(next(it) != myExps.end())
+		if(next(it) != myExps->end())
 		{
 			out << ", ";
 		}
@@ -183,7 +183,10 @@ void ReturnStmtNode::unparse(std::ostream& out, int indent){
 }
 
 void IdNode::unparse(std::ostream& out, int indent){
-	//out << myStrVal;
+	out << myStrVal;
+	if (myEntry != nullptr) {
+		out << "(" << myEntry->getType() << ")";
+	}
 }
 
 void IntNode::unparse(std::ostream& out, int indent){
